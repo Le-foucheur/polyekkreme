@@ -29,7 +29,7 @@ class Maestro {
         int nb_pendule;
         int nb_max_pendule;
         double temps;
-        double grav;
+        double grav = 9.81;
         double pas;
         double tempsmax;
         Pendule** list_pendule;

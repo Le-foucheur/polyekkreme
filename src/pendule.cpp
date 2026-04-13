@@ -17,7 +17,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0, Pendu
     this->identifieur = id;
     this->masse = m;
     this->longeur = r;
-    this->th = theta0 - M_PI / 2;
+    this->th = theta0;
     this->vit_angl = omega0;
     this->attache = parent;
 }
@@ -26,7 +26,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0){
     this->identifieur = id;
     this->masse = m;
     this->longeur = r;
-    this->th = theta0 - M_PI /2;
+    this->th = theta0;
     this->vit_angl = omega0;
     this->attache = NULL;
 }
@@ -50,7 +50,7 @@ double Pendule::omega() {
 } 
 
 double Pendule::x() {
-    double tmp = longeur * cos(th);
+    double tmp = longeur * sin(th);
     if (attache == NULL) {
         return tmp;
     }
@@ -60,7 +60,7 @@ double Pendule::x() {
 }
 
 double Pendule::y() {
-    double tmp = longeur * sin(th);
+    double tmp = - longeur * cos(th);
     if (attache == NULL) {
         return tmp;
     }
@@ -105,8 +105,8 @@ void Pendule::print(){
     printf("id: %d\n", identifieur);
     printf("\tmasse: %0.3g\n", masse);
     printf("\tcoord cart: %0.3g, %0.3g\n", x(), y());
-    printf("\tcoord pol: %0.3g, %0.3g\n", longeur, th);
-    printf("\tcoord nat: %0.3g, %0.3g\n", longeur, th + M_PI / 2);
+    printf("\tcoord pol: %0.3g, %0.3g\n", longeur, th - M_PI_2);
+    printf("\tcoord nat: %0.3g, %0.3g\n", longeur, th);
     printf("\tvitesse angulaire: %0.3g\n", vit_angl);
     if (attache != NULL){
         printf("\tid attache: %d\n", attache->id());

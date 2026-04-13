@@ -7,7 +7,7 @@ SRC = src/
 TARGET = target/
 
 build:
-	${CXX} -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp -o ${TARGET}main
+	${CXX} -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}main
 
 plot:
 	typst compile --root=. ./target/plot/plot.typ ./target/plot.pdf
