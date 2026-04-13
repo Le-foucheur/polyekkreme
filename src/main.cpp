@@ -24,7 +24,7 @@ int main() {
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
     TUI tuigauche = TUI(w.ws_col / 3, w.ws_row, true);
-    TUI tuidroit = TUI( 2 * w.ws_col / 3, w.ws_row - 4, tuigauche.w() + 1);
+    TUI_PENDULE tuidroit = TUI_PENDULE( 2 * w.ws_col / 3, w.ws_row - 4, tuigauche.w() + 1);
 
     Maestro maitre = Maestro(2, 0.001, 10);
     
@@ -35,9 +35,14 @@ int main() {
     maitre.add_pendule(&test1);
     maitre.add_pendule(&test2);
 
-    tuidroit.pos_char(0, 't');
-    tuidroit.pos_char(10, 10, 't');
-    tuidroit.pos_char(100, 't');
+    //tuidroit.pos_char(0, "t");
+    tuidroit.pos_char(10, 10, "t");
+    tuidroit.pos_char(50, 50, "t");
+    tuidroit.pos_char(100, "t");
+
+    for (int i = 0; i < 10; i++) {
+        tuidroit.pos_px(i, true);
+    }
 
     
     printf("\x1b[?47h\x1b[?1049h\x1b[?25l");
@@ -46,6 +51,8 @@ int main() {
 
         tuigauche.add_info(true, maitre);
         tuigauche.print_screen();
+
+        tuidroit.transfere_sub_to_screen();
         tuidroit.print_screen();
         maitre.calcule_temp_plus_1();
 

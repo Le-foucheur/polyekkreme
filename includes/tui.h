@@ -18,12 +18,12 @@ class TUI {
 
     int w();
     int h();
-    char* ecran();
+    std::string* ecran();
 
     //SET
 
-    void pos_char(int x, int y, char c);
-    void pos_char(int i, char c);
+    void pos_char(int x, int y, std::string c);
+    void pos_char(int i, std::string c);
     
     void pos_str(int x, int y, std::string s);
     void pos_str(int i, std::string s);
@@ -36,12 +36,35 @@ class TUI {
 
     void print_screen();
 
-    private:
+    protected:
         bool wall;
         int width;
         int heith;
         int offset = 0;
-        char* screen = NULL;
+        std::string* screen = NULL;
+};
+
+class TUI_PENDULE : public TUI {
+    public:
+    TUI_PENDULE();
+    TUI_PENDULE(int w, int h, int ofset);
+    ~TUI_PENDULE();
+
+    // GET
+
+    bool at(int x, int y);
+
+    //SET
+
+    void pos_px(int x, int y, bool px);
+    void pos_px(int i, bool px);
+
+    void transfere_sub_to_screen();
+
+    private:
+    int sub_width;
+    int sub_heith;
+    bool* sous_screen = NULL;
 };
 
 #endif
