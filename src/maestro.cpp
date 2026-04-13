@@ -35,6 +35,16 @@ double Maestro::tmax() {
     return tempsmax;
 }
 
+double Maestro::t() {
+    return temps;
+}
+int Maestro::nb_p() {
+    return nb_pendule;
+}
+int Maestro::nb_pmax() {
+    return nb_max_pendule;
+}
+
 /*      Set     */
 
 void Maestro::add_pendule(Pendule* pendule) {

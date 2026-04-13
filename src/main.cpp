@@ -24,7 +24,7 @@ int main() {
 
     maitre.print(true);
 
-    tui.
+    tui.pos_str(2, 2, "bonjour\nmonde");
 
     tui.print_screen();
 

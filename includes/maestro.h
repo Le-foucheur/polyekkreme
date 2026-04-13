@@ -13,6 +13,9 @@ class Maestro {
         Pendule** get_pendule();
         double dt();
         double tmax();
+        double t();
+        int nb_p();
+        int nb_pmax();
 
         //Set
         void add_pendule(Pendule* pendule);

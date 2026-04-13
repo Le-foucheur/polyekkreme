@@ -1,7 +1,9 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <string>
 #include "tui.h"
+#include "maestro.h"
 
 TUI::TUI() {
     struct winsize w;
@@ -55,6 +57,22 @@ void TUI::pos_char(int x, int y, char c) {
     screen[y * width + x] = c;
 }
 
+void TUI::pos_str(int i, std::string s) {
+    for (auto c : s) {
+        if (c != '\n') {
+            pos_char(i, c);
+            printf("%c", c);
+            i++;
+        } else {
+            i = i + width - x(i);
+        }
+    }
+}
+
+void TUI::pos_str(int x, int y, std::string s) {
+    pos_str(y * width + x, s);
+}
+
 
 
 int TUI::x(int i) {
@@ -69,4 +87,17 @@ void TUI::print_screen() {
     for(int i = 0; i < width * heith; i++) {
         fprintf(stdout, "%c", screen[i]);
     }
+}
+
+void TUI::add_info(bool pendule, Maestro m) {
+    pos_char(0, 0, 'p');
+    pos_char(0, 0, 'a');
+    pos_char(0, 0, 's');
+    printf("pas : %g\n", m.dt());
+    printf("temps / temps maximum: %g / %g\n", m.t(), m.tmax());
+    printf("nb pendule / nb max: %d / %d\n", m.nb_p(), m.nb_pmax());
+    //if (pendule)
+    //{
+    //    print_pendules();
+    //}
 }

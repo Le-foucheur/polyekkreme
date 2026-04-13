@@ -2,6 +2,9 @@
 #define TUIH
 
 #include <stdlib.h>
+#include <string>
+
+#include "maestro.h"
 
 class TUI {
     public:
@@ -18,6 +21,11 @@ class TUI {
 
     void pos_char(int x, int y, char c);
     void pos_char(int i, char c);
+    
+    void pos_str(int x, int y, std::string s);
+    void pos_str(int i, std::string s);
+
+    void add_info(bool pendule, Maestro m);
 
     int x(int i);
     int y(int i);
