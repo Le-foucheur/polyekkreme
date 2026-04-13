@@ -9,12 +9,15 @@
 class TUI {
     public:
     TUI();
+    TUI(int w, int h);
+    TUI(int w, int h, bool mur);
+    TUI(int w, int h, int ofset);
     ~TUI();
 
     //GET
 
-    unsigned short w();
-    unsigned short h();
+    int w();
+    int h();
     char* ecran();
 
     //SET
@@ -26,6 +29,7 @@ class TUI {
     void pos_str(int i, std::string s);
 
     void add_info(bool pendule, Maestro m);
+    void screen_clean();
 
     int x(int i);
     int y(int i);
@@ -33,8 +37,10 @@ class TUI {
     void print_screen();
 
     private:
-        unsigned short width;
-        unsigned short heith;
+        bool wall;
+        int width;
+        int heith;
+        int offset = 0;
         char* screen = NULL;
 };
 

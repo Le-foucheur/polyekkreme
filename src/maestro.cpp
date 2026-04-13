@@ -9,7 +9,7 @@ Maestro::Maestro() {
 }
 
 Maestro::~Maestro() {
-    free(list_pendule);
+    //free(list_pendule);
 }
 
 Maestro::Maestro(int nbmax, double dt, double tmax) {

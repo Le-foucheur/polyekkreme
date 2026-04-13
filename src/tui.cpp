@@ -21,13 +21,51 @@ TUI::~TUI() {
     free(screen);
 }
 
+TUI::TUI(int w, int h) {
+    this->width = w;
+    this->heith = h;
+    this->wall = false;
+    this->screen = (char *)malloc(sizeof(char) * width * heith);
+    for (int i = 0; i < width * heith; i++)
+    {
+        pos_char(i, ' ');
+    }
+}
+
+TUI::TUI(int w, int h, int ofset) {
+    this->width = w;
+    this->heith = h;
+    this->wall = false;
+    this->offset = ofset;
+    this->screen = (char *)malloc(sizeof(char) * width * heith);
+    for (int i = 0; i < width * heith; i++)
+    {
+        pos_char(i, ' ');
+    }
+}
+
+TUI::TUI(int w, int h, bool mur) {
+    this->width = w;
+    this->heith = h;
+    this->wall = mur;
+    this->offset = 0;
+    this->screen = (char *)malloc(sizeof(char) * width * heith);
+    for (int i = 0; i < width * heith; i++)
+    {
+        pos_char(i, ' ');
+        if (mur && i % width == width - 1) {
+            pos_char(i, '|');
+        }
+    }
+}
+
 /*      GET     */
 
-unsigned short TUI::w() {
+int TUI::w() {
     return width;
 }
 
-unsigned short TUI::h() {
+int TUI::h() {
     return heith;
 }
 
@@ -58,13 +96,13 @@ void TUI::pos_char(int x, int y, char c) {
 }
 
 void TUI::pos_str(int i, std::string s) {
+    int tmp = x(i);
     for (auto c : s) {
         if (c != '\n') {
             pos_char(i, c);
-            printf("%c", c);
             i++;
         } else {
-            i = i + width - x(i);
+            i += tmp + width - x(i);
         }
     }
 }
@@ -84,20 +122,36 @@ int TUI::y(int i) {
 }
 
 void TUI::print_screen() {
+    printf("\x1b[1;1H");
+    printf("\x1b[%dC", offset);
     for(int i = 0; i < width * heith; i++) {
         fprintf(stdout, "%c", screen[i]);
+        if (i % width == width - 1 && i != width * heith - 1)
+        {
+            printf("\n");
+            printf("\x1b[%dC", offset);
+        }
     }
 }
 
 void TUI::add_info(bool pendule, Maestro m) {
-    pos_char(0, 0, 'p');
-    pos_char(0, 0, 'a');
-    pos_char(0, 0, 's');
-    printf("pas : %g\n", m.dt());
-    printf("temps / temps maximum: %g / %g\n", m.t(), m.tmax());
-    printf("nb pendule / nb max: %d / %d\n", m.nb_p(), m.nb_pmax());
-    //if (pendule)
-    //{
-    //    print_pendules();
-    //}
+    std::string s = "pas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
+    if (pendule) {
+        Pendule** list = m.get_pendule();
+        for (int i = 0; i < m.nb_p(); i++)
+        {
+            s += "\n\nid: " + std::to_string(list[i]->id());
+            s += "\n      masse: " + std::to_string(list[i]->m());
+            s += "\n      coord cart: " + std::to_string(list[i]->x()) + ", " + std::to_string(list[i]->y());
+            s += "\n      coord pol: " + std::to_string(list[i]->r()) + ", " + std::to_string(list[i]->theta());
+            s += "\n      vitesse angulaire: " + std::to_string(list[i]->omega());
+        }
+    }
+    pos_str(1, 1, s);
+}
+
+void TUI::screen_clean() {
+    for (int i = 0; i < width * heith; i++){
+        pos_char(i, ' ');
+    }
 }
