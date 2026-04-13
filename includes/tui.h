@@ -59,6 +59,9 @@ class TUI_PENDULE : public TUI {
     void pos_px(int x, int y, bool px);
     void pos_px(int i, bool px);
 
+    void circle(int x, int y);
+    void petit_circle(int x, int y);
+
     void transfere_sub_to_screen();
 
     private:

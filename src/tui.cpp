@@ -223,12 +223,39 @@ bool TUI_PENDULE::at(int x, int y) {
 
 void TUI_PENDULE::pos_px(int i, bool px)
 {
+    if(i > sub_heith * sub_width || i < 0) {
+        return;
+    }
     sous_screen[i] = px;
 }
 
 void TUI_PENDULE::pos_px(int x, int y, bool px)
 {
     pos_px(y * sub_width + x, px);
+}
+
+void TUI_PENDULE::circle(int x, int y){
+    pos_px(x - 1, y - 1, true);
+    pos_px(x, y - 1, true);
+    pos_px(x + 1, y - 1, true);
+    pos_px(x - 1, y, true);
+    pos_px(x, y, true);
+    pos_px(x + 1, y, true);
+    pos_px(x - 1, y + 1, true);
+    pos_px(x, y + 1, true);
+    pos_px(x + 1, y + 1, true);
+    pos_px(x, y - 2, true);
+    pos_px(x - 2, y, true);
+    pos_px(x, y + 2, true);
+    pos_px(x + 2, y, true);
+}
+
+void TUI_PENDULE::petit_circle(int x, int y){
+    pos_px(x, y - 1, true);
+    pos_px(x - 1, y, true);
+    pos_px(x, y, true);
+    pos_px(x + 1, y, true);
+    pos_px(x, y + 1, true);
 }
 
 void TUI_PENDULE::transfere_sub_to_screen() {

@@ -34,16 +34,6 @@ int main() {
 
     maitre.add_pendule(&test1);
     maitre.add_pendule(&test2);
-
-    //tuidroit.pos_char(0, "t");
-    tuidroit.pos_char(10, 10, "t");
-    tuidroit.pos_char(50, 50, "t");
-    tuidroit.pos_char(100, "t");
-
-    for (int i = 0; i < 10; i++) {
-        tuidroit.pos_px(i, true);
-    }
-
     
     printf("\x1b[?47h\x1b[?1049h\x1b[?25l");
     for (double i = maitre.t(); i < maitre.tmax(); i += maitre.dt()) {
@@ -54,6 +44,7 @@ int main() {
 
         tuidroit.transfere_sub_to_screen();
         tuidroit.print_screen();
+        tuidroit.petit_circle(100,100);
         maitre.calcule_temp_plus_1();
 
         clock_t diff = clock() - now;
