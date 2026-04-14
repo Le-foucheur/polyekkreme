@@ -28,6 +28,9 @@ class Maestro {
         void calcule_temp_plus_1();
         void calcule_tmax();
 
+        void init_save();
+        void save();
+
     private:
         int nb_pendule;
         int nb_max_pendule;

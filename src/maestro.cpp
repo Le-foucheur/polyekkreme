@@ -209,3 +209,89 @@ void Maestro::calcule_tmax() {
     fclose(portraifile);
     fclose(energiefile);
 } 
+
+void Maestro::init_save() {
+    FILE *savefile = fopen("./target/pendulecoordo.csv", "w");
+    if (savefile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/ballcoordo.csv");
+        exit(1);
+    }
+    FILE *portraifile = fopen("./target/penduleportrait.csv", "w");
+    if (portraifile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleportrait.csv");
+        exit(1);
+    }
+    FILE *energiefile = fopen("./target/penduleenergie.csv", "w");
+    if (energiefile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleenergie.csv");
+        exit(1);
+    }
+    fprintf(savefile, "t;");
+    for (int i = 0; i <= nb_pendule / 2; i++)
+    {
+        fprintf(savefile, "x%d;y%d;", i, i);
+        fprintf(portraifile, "theta%d;omega%d;", i, i);
+    }
+    fprintf(energiefile, "t;Ep;Ec;Em;");
+    fprintf(savefile, "\n");
+    fprintf(portraifile, "\n");
+    fprintf(energiefile, "\n");
+
+    fclose(savefile);
+    fclose(portraifile);
+    fclose(energiefile);
+}
+
+void Maestro::save() {
+    FILE *savefile = fopen("./target/pendulecoordo.csv", "a");
+    if (savefile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/ballcoordo.csv");
+        exit(1);
+    }
+    FILE *portraifile = fopen("./target/penduleportrait.csv", "a");
+    if (portraifile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleportrait.csv");
+        exit(1);
+    }
+    FILE *energiefile = fopen("./target/penduleenergie.csv", "a");
+    if (energiefile == NULL)
+    {
+        fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleenergie.csv");
+        exit(1);
+    }
+
+    fprintf(savefile, "%0.3g;", temps);
+    if (nb_pendule == 2 ){
+        fprintf(energiefile, "%0.3g;", temps);
+
+        double m1 = list_pendule[0]->m();
+        double l1 = list_pendule[0]->r();
+        double o1 = list_pendule[0]->omega();
+        double m2 = list_pendule[1]->m();
+        double l2 = list_pendule[1]->r();
+        double o2 = list_pendule[1]->omega();
+        double D = list_pendule[0]->theta() - list_pendule[1]->theta();
+
+        double Ec = 1. / 2. * m1 * l1 * l1 * o1 * o1 + 1./2. * m2 * (l1 * l1 * o1 * o1 + l2 * l2 * o2 * o2 + 2 * l1 * l2 * o1 * o2 * cos(D));
+        double Ep = grav * (m1 * list_pendule[0]->y() + m2 * list_pendule[1]->y());
+        double Em = Ec + Ep;
+        fprintf(energiefile, "%0.3g;%0.3g;%0.3g;", Ep, Ec, Em);
+    }
+    for (int i = 0; i < nb_pendule; i++){
+        fprintf(savefile, "%0.3g;%0.3g;", list_pendule[i]->x(), list_pendule[i]->y());
+        fprintf(portraifile, "%0.3g;%0.3g;", list_pendule[i]->theta(), list_pendule[i]->omega());
+        
+    }
+    fprintf(savefile, "\n");
+    fprintf(portraifile, "\n");
+    fprintf(energiefile, "\n");
+
+    fclose(savefile);
+    fclose(portraifile);
+    fclose(energiefile);
+} 

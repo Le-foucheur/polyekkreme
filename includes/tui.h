@@ -59,15 +59,29 @@ class TUI_PENDULE : public TUI {
     void pos_px(int x, int y, bool px);
     void pos_px(int i, bool px);
 
+    int convertx(double x, Maestro m);
+    int converty(double y, Maestro m);
+
     void circle(int x, int y);
     void petit_circle(int x, int y);
+    void ligne(int x1, int y1, int x2, int y2);
+    void draw_pendule(Maestro m);
 
     void transfere_sub_to_screen();
+    void sub_screen_clean();
 
-    private:
-    int sub_width;
+    private : int sub_width;
     int sub_heith;
     bool* sous_screen = NULL;
 };
+
+template <typename T>
+T max(T a, T b) {
+    if (a >= b) {
+        return a;
+    } else {
+        return b;
+    }
+}
 
 #endif

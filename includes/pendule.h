@@ -18,6 +18,7 @@ public:
     double theta();
     double omega();
     double m();
+    Pendule* attacher();
     
     //Les set
     void id(int id);

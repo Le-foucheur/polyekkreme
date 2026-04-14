@@ -73,6 +73,10 @@ double Pendule::m() {
     return masse;
 }
 
+Pendule* Pendule::attacher() {
+    return attache;
+}
+
 /*      Set     */
 
 void Pendule::id(int id) {

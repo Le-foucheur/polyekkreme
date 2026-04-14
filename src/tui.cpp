@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string>
+#include <cmath>
 #include "tui.h"
 #include "maestro.h"
 
@@ -256,6 +257,342 @@ void TUI_PENDULE::petit_circle(int x, int y){
     pos_px(x, y, true);
     pos_px(x + 1, y, true);
     pos_px(x, y + 1, true);
+    pos_px(x - 1, y - 1, true);
+    pos_px(x - 1, y + 1, true);
+    pos_px(x + 1, y - 1, true);
+    pos_px(x + 1, y + 1, true);
+}
+
+//void TUI_PENDULE::ligne(int x1, int y1, int x2, int y2) {
+//    if (y1 > y2)
+//    int y = y1;
+//    int dx = x2 - x1;
+//    int dy = y2 - y1;
+//    double e = 0.;
+//    double e10 = (double)dy / (double)dx;
+//    double e01 = -1.;
+//
+//    for(int x = x1; x < x2; x++){
+//        pos_px(x,y, true);
+//        e += e10;
+//        if (e >= 0.5) {
+//            y++;
+//            e += e01;
+//        }
+//    }
+//
+//}
+
+void TUI_PENDULE::ligne(int x1, int y1, int x2, int y2)
+{
+    int dx = x2 - x1;
+    int dy;
+
+    if (dx != 0)
+    {
+        if (dx > 0)
+        {
+            dy = y2 - y1;
+            if (dy != 0)
+            {
+                if (dy > 0)
+                {
+                    // vecteur oblique dans le 1er quadran
+                    if (dx >= dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 1er octant
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        // e est positif
+                        for (;;)
+                        {
+                            pos_px(x1, y1, true);
+                            ++x1;
+                            if (x1 == x2)
+                            {
+                                break;
+                            }
+                            e -= dy;
+                            if (e < 0)
+                            {
+                                ++y1; // déplacement diagonal
+                                e += dx;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // vecteur oblique proche de la verticale, dans le 2d octant
+                        int e = dy;
+                        dy = e * 2;
+                        dx = dx * 2;
+                        // e est positif
+                        for (;;)
+                        { // déplacements verticaux
+                            pos_px(x1, y1, true);
+                            ++y1;
+                            if (y1 == y2)
+                            {
+                                break;
+                            }
+                            e -= dx;
+                            if (e < 0)
+                            {
+                                ++x1; // déplacement diagonal
+                                e += dy;
+                            }
+                        }
+                    }
+                }
+                else
+                { // dy < 0 (et dx > 0)
+                    // vecteur oblique dans le 4e cadran
+                    if (dx >= -dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        // e est positif
+                        for (;;)
+                        { // déplacements horizontaux
+                            pos_px(x1, y1, true);
+                            ++x1;
+                            if (x1 == x2)
+                            {
+                                break;
+                            }
+                            e = e + dy;
+
+                            if (e < 0)
+                            {
+                                --y1; // déplacement diagonal
+                                e = e + dx;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // vecteur oblique proche de la verticale, dans le 7e octant
+                        int e = dy;
+                        dy = e * 2;
+                        dx = dx * 2; // e est négatif
+                        for (;;)
+                        { // déplacements verticaux
+                            pos_px(x1, y1, true);
+                            --y1;
+                            if (y1 == y2)
+                            {
+                                break;
+                            }
+                            e += dx;
+                            if (e > 0)
+                            {
+                                ++x1; // déplacement diagonal
+                                e += dy;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            { // dy = 0 (et dx > 0)
+                // vecteur horizontal vers la droite
+                do
+                {
+                    pos_px(x1, y1, true);
+                    ++x1;
+                } while (x1 != x2);
+            }
+        }
+        else
+        { // dx < 0
+            dy = y2 - y1;
+            if (dy != 0)
+            {
+                if (dy > 0)
+                {
+                    // vecteur oblique dans le 2d quadran
+                    if (-dx >= dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        // e est négatif
+                        for (;;)
+                        { // déplacements horizontaux
+                            pos_px(x1, y1, true);
+                            --x1;
+                            if (x1 == x2)
+                            {
+                                break;
+                            }
+                            e += dy;
+                            if (e >= 0)
+                            {
+                                ++y1; // déplacement diagonal
+                                e += dx;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // vecteur oblique proche de la verticale, dans le 3e octant
+                        int e = dy;
+                        dy = e * 2;
+                        dx = dx * 2;
+                        // e est positif
+                        for (;;)
+                        { // déplacements verticaux
+                            pos_px(x1, y1, true);
+                            ++y1;
+                            if (y1 == y2)
+                            {
+                                break;
+                            }
+                            e += dx;
+                            if (e <= 0)
+                            {
+                                --x1; // déplacement diagonal
+                                e += dy;
+                            }
+                        }
+                    }
+                }
+                else
+                { // dy < 0 (et dx < 0)
+                    // vecteur oblique dans le 3e cadran
+                    if (dx <= dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        // e est négatif
+                        for (;;)
+                        { // déplacements horizontaux
+                            pos_px(x1, y1, true);
+                            --x1;
+                            if (x1 == x2)
+                            {
+                                break;
+                            }
+                            e -= dy;
+                            if (e >= 0)
+                            {
+                                --y1; // déplacement diagonal
+                                e += dx;
+                            }
+                        }
+                    }
+                    else
+                    { // vecteur oblique proche de la verticale, dans le 6e octant
+                        int e = dy;
+                        dy = e * 2;
+                        dx = dx * 2;
+                        // e est négatif
+                        for (;;)
+                        { // déplacements verticaux
+                            pos_px(x1, y1, true);
+                            --y1;
+                            if (y1 == y2)
+                            {
+                                break;
+                            }
+                            e -= dx;
+                            if (e >= 0)
+                            {
+                                --x1; // déplacement diagonal
+                                e += dy;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            { // dy = 0 (et dx < 0)
+                // vecteur horizontal vers la gauche
+                do
+                {
+                    pos_px(x1, y1, true);
+                    --x1;
+                } while (x1 != x2);
+            }
+        }
+    }
+    else
+    {
+        // dx = 0
+        dy = y2 - y1;
+        if (dy != 0)
+        {
+            if (dy > 0)
+            {
+                // vecteur vertical croissant
+                do
+                {
+                    pos_px(x1, y1, true);
+                    ++y1;
+                } while (y1 != y2);
+            }
+            else
+            { // dy < 0 (et dx = 0)
+                // vecteur vertical décroissant
+                do
+                {
+                    pos_px(x1, y1, true);
+                    --y1;
+                } while (y1 != y2);
+            }
+        }
+    }
+    // le pixel final (x2, y2) n’est pas tracé.
+}
+
+int TUI_PENDULE::convertx(double x, Maestro m) {
+    Pendule** list = m.get_pendule();
+    double tmplen = 2. * (list[0]->r() + list[1]->r()) + max(list[0]->r(), list[1]->r());
+    double coef = sub_width / (tmplen);
+    return int(round(coef * x + sub_width / 2));
+}
+
+int TUI_PENDULE::converty(double y, Maestro m) {
+    Pendule** list = m.get_pendule();
+    //double tmplen = 4. * (list[0]->r() + list[1]->r());
+    double tmplen = 2. * (list[0]->r() + list[1]->r()) + max(list[0]->r(), list[1]->r());
+    double coef = - sub_heith /(tmplen); 
+    return int(round(coef * y + sub_heith / 3));
+}
+
+void TUI_PENDULE::draw_pendule(Maestro m) {
+    Pendule** list = m.get_pendule();
+
+    for (int i = 0; i < m.nb_p(); i++) {
+        Pendule* pend = list[i];
+        int x = convertx(pend->x(), m);
+        int y = converty(pend->y(), m);
+
+        circle(x,y);
+        Pendule *parent = pend->attacher();
+        if (parent != NULL)
+        {
+            int xp = convertx(parent->x(), m);
+            int yp = converty(parent->y(), m);
+
+            ligne(x, y, xp, yp);
+        } else {
+            ligne(x, y, convertx(0, m), converty(0, m));
+        }
+    }
+}
+
+void TUI_PENDULE::sub_screen_clean() {
+    for (int i = 0; i < sub_width * sub_heith; i++)
+    {
+        pos_px(i, false);
+    }
 }
 
 void TUI_PENDULE::transfere_sub_to_screen() {
