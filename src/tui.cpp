@@ -560,7 +560,6 @@ int TUI_PENDULE::convertx(double x, Maestro m) {
 
 int TUI_PENDULE::converty(double y, Maestro m) {
     Pendule** list = m.get_pendule();
-    //double tmplen = 4. * (list[0]->r() + list[1]->r());
     double tmplen = 2. * (list[0]->r() + list[1]->r()) + max(list[0]->r(), list[1]->r());
     double coef = - sub_heith /(tmplen); 
     return int(round(coef * y + sub_heith / 3));
@@ -605,6 +604,15 @@ void TUI_PENDULE::transfere_sub_to_screen() {
         int sub_x = 2 * x;
         int sub_y = 3 * y;
 
+        //bool hg = at(sub_x, sub_y); // pixel haut gauche
+        //bool hd = at(sub_x+1, sub_y); // pixel haut droit
+        //bool chg = at(sub_x, sub_y+1); // pixel centre gauche
+        //bool chd = at(sub_x+1, sub_y+1); // pixel centre droit
+        //bool cbg = at(sub_x, sub_y+2); // pixel bas gauche
+        //bool cbd = at(sub_x+1, sub_y+2); // pixel bas droit
+        //bool bg = at(sub_x, sub_y+3); // pixel bas gauche
+        //bool bd = at(sub_x+1, sub_y+3); // pixel bas droit
+
         bool hg = at(sub_x, sub_y); // pixel haut gauche
         bool hd = at(sub_x+1, sub_y); // pixel haut droit
         bool cg = at(sub_x, sub_y+1); // pixel centre gauche
@@ -612,258 +620,22 @@ void TUI_PENDULE::transfere_sub_to_screen() {
         bool bg = at(sub_x, sub_y+2); // pixel bas gauche
         bool bd = at(sub_x+1, sub_y+2); // pixel bas droit
 
-        //POURQUOI J’AI PAS FAIS UN COMPTEUR BINAIRE + UN TABLEAU DE TAILLE 64 ?????? JE ME HAIS
-        if (hg == true && hd == true && cg == true && cd == true && bg == true && bd == true) {
-            pos_char(x, y, "█");
-        }
-        if (hg == false && hd == true && cg == true && cd == true && bg == true && bd == true)
+        //bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
+        //std::string caractere[256] = {" ", "𜺨", "𜺫", "🮂", "𜴀", "▘", "𜴁", "𜴂", "𜴃", "𜴄", "▝", "𜴅", "𜴆", "𜴇", "𜴈", "▀", "𜴉", "𜴊", "𜴋", "𜴌", "🯦", "𜴍", "𜴎", "𜴏", "𜴐", "𜴑", "𜴒", "𜴓", "𜴔", "𜴕", "𜴖", "𜴗", "𜴘", "𜴙", "𜴚", "𜴛", "𜴜", "𜴝", "𜴞", "𜴟", "🯧", "𜴠", "𜴡", "𜴢", "𜴣", "𜴤", "𜴥", "𜴦", "𜴧", "𜴨", "𜴩", "𜴪", "𜴫", "𜴬", "𜴭", "𜴮", "𜴯", "𜴰", "𜴱", "𜴲", "𜴳", "𜴴", "𜴵", "🮅", "𜺣", "𜴶", "𜴷", "𜴸", "𜴹", "𜴺", "𜴻", "𜴼", "𜴽", "𜴾", "𜴿", "𜵀", "𜵁", "𜵂", "𜵃", "𜵄", "▖", "𜵅", "𜵆", "𜵇", "𜵈", "▌", "𜵉", "𜵊", "𜵋", "𜵌", "▞", "𜵍", "𜵎", "𜵏", "𜵐", "▛", "𜵑", "𜵒", "𜵓", "𜵔", "𜵕", "𜵖", "𜵗", "𜵘", "𜵙", "𜵚", "𜵛", "𜵜", "𜵝", "𜵞", "𜵟", "𜵠", "𜵡", "𜵢", "𜵣", "𜵤", "𜵥", "𜵦", "𜵧", "𜵨", "𜵩", "𜵪", "𜵫", "𜵬", "𜵭", "𜵮", "𜵯", "𜵰", "𜺠", "𜵱", "𜵲", "𜵳", "𜵴", "𜵵", "𜵶", "𜵷", "𜵸", "𜵹", "𜵺", "𜵻", "𜵼", "𜵽", "𜵾", "𜵿", "𜶀", "𜶁", "𜶂", "𜶃", "𜶄", "𜶅", "𜶆", "𜶇", "𜶈", "𜶉", "𜶊", "𜶋", "𜶌", "𜶍", "𜶎", "𜶏", "▗", "𜶐", "𜶑", "𜶒", "𜶓", "▚", "𜶔", "𜶕", "𜶖", "𜶗", "▐", "𜶘", "𜶙", "𜶚", "𜶛", "▜", "𜶜", "𜶝", "𜶞", "𜶟", "𜶠", "𜶡", "𜶢", "𜶣", "𜶤", "𜶥", "𜶦", "𜶧", "𜶨", "𜶩", "𜶪", "𜶫", "▂", "𜶬", "𜶭", "𜶮", "𜶯", "𜶰", "𜶱", "𜶲", "𜶳", "𜶴", "𜶵", "𜶶", "𜶷", "𜶸", "𜶹", "𜶺", "𜶻", "𜶼", "𜶽", "𜶾", "𜶿", "𜷀", "𜷁", "𜷂", "𜷃", "𜷄", "𜷅", "𜷆", "𜷇", "𜷈", "𜷉", "𜷊", "𜷋", "𜷌", "𜷍", "𜷎", "𜷏", "𜷐", "𜷑", "𜷒", "𜷓", "𜷔", "𜷕", "𜷖", "𜷗", "𜷘", "𜷙", "𜷚", "▄", "𜷛", "𜷜", "𜷝", "𜷞", "▙", "𜷟", "𜷠", "𜷡", "𜷢", "▟", "𜷣", "▆", "𜷤", "𜷥", "█"};
+        
+        bool cases[6] = {bd, bg, cd, cg, hd, hg}; // représentation binaire en bit de point faible
+        std::string caractere[64] = {" ", "🬀", "🬁", "🬂", "🬃", "🬄", "🬅", "🬆", "🬇", "🬈", "🬉", "🬊", "🬋", "🬌", "🬍", "🬎", "🬏", "🬐", "🬑", "🬒", "🬓", "▌", "🬔", "🬕", "🬖", "🬗", "🬘", "🬙", "🬚", "🬛", "🬜", "🬝", "🬞", "🬟", "🬠", "🬡", "🬢", "🬣", "🬤", "🬥", "🬦", "🬧", "▐", "🬨", "🬩", "🬪", "🬫", "🬬", "🬭", "🬮", "🬯", "🬰", "🬱", "🬲", "🬳", "🬴", "🬵", "🬶", "🬷", "🬸", "🬹", "🬺", "🬻", "█"};
+
+        int indice = 0;
+        for (int j = 0; j < 6; j++)
         {
-            pos_char(x, y, "🬻");
-        }
-        if (hg == true && hd == false && cg == true && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬺");
-        }
-        if (hg == false && hd == false && cg == true && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬹");
-        }
-        if (hg == true && hd == true && cg == false && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬸");
-        }
-        if (hg == false && hd == true && cg == false && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬷");
-        }
-        if (hg == true && hd == false && cg == false && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬶");
-        }
-        if (hg == false && hd == false && cg == false && cd == true && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬵");
-        }
-        if (hg == true && hd == true && cg == true && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬴");
-        }
-        if (hg == false && hd == true && cg == true && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬳");
-        }
-        if (hg == true && hd == false && cg == true && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬲");
-        }
-        if (hg == false && hd == false && cg == true && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬱");
-        }
-        if (hg == true && hd == true && cg == false && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬰");
-        }
-        if (hg == false && hd == true && cg == false && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬯");
-        }
-        if (hg == true && hd == false && cg == false && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬮");
-        }
-        if (hg == false && hd == false && cg == false && cd == false && bg == true && bd == true)
-        {
-            pos_char(x, y, "🬭");
-        }
-        if (hg == true && hd == true && cg == true && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬬");
-        }
-        if (hg == false && hd == true && cg == true && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬫");
-        }
-        if (hg == true && hd == false && cg == true && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬪");
-        }
-        if (hg == false && hd == false && cg == true && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬩");
-        }
-        if (hg == true && hd == true && cg == false && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬨");
-        }
-        if (hg == false && hd == true && cg == false && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "▐");
-        }
-        if (hg == true && hd == false && cg == false && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬧");
-        }
-        if (hg == false && hd == false && cg == false && cd == true && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬦");
-        }
-        if (hg == true && hd == true && cg == true && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬥");
-        }
-        if (hg == false && hd == true && cg == true && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬤");
-        }
-        if (hg == true && hd == false && cg == true && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬣");
-        }
-        if (hg == false && hd == false && cg == true && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬢");
-        }
-        if (hg == true && hd == true && cg == false && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬡");
-        }
-        if (hg == false && hd == true && cg == false && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬠");
-        }
-        if (hg == true && hd == false && cg == false && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬟");
-        }
-        if (hg == false && hd == false && cg == false && cd == false && bg == false && bd == true)
-        {
-            pos_char(x, y, "🬞");
-        }
-        if (hg == true && hd == true && cg == true && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬝");
-        }
-        if (hg == false && hd == true && cg == true && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬜");
-        }
-        if (hg == true && hd == false && cg == true && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬛");
-        }
-        if (hg == false && hd == false && cg == true && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬚");
-        }
-        if (hg == true && hd == true && cg == false && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬙");
-        }
-        if (hg == false && hd == true && cg == false && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬘");
-        }
-        if (hg == true && hd == false && cg == false && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬗");
-        }
-        if (hg == false && hd == false && cg == false && cd == true && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬖");
-        }
-        if (hg == true && hd == true && cg == true && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬕");
-        }
-        if (hg == false && hd == true && cg == true && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬔");
-        }
-        if (hg == true && hd == false && cg == true && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "▌");
-        }
-        if (hg == false && hd == false && cg == true && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬓");
-        }
-        if (hg == true && hd == true && cg == false && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬒");
-        }
-        if (hg == false && hd == true && cg == false && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬑");
-        }
-        if (hg == true && hd == false && cg == false && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬐");
-        }
-        if (hg == false && hd == false && cg == false && cd == false && bg == true && bd == false)
-        {
-            pos_char(x, y, "🬏");
-        }
-        if (hg == true && hd == true && cg == true && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬎");
-        }
-        if (hg == false && hd == true && cg == true && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬍");
-        }
-        if (hg == true && hd == false && cg == true && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬌");
-        }
-        if (hg == false && hd == false && cg == true && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬋");
-        }
-        if (hg == true && hd == true && cg == false && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬊");
-        }
-        if (hg == false && hd == true && cg == false && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬉");
-        }
-        if (hg == true && hd == false && cg == false && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬈");
-        }
-        if (hg == false && hd == false && cg == false && cd == true && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬇");
-        }
-        if (hg == true && hd == true && cg == true && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬆");
-        }
-        if (hg == false && hd == true && cg == true && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬅");
-        }
-        if (hg == true && hd == false && cg == true && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬄");
-        }
-        if (hg == false && hd == false && cg == true && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬃");
-        }
-        if (hg == true && hd == true && cg == false && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬂");
-        }
-        if (hg == false && hd == true && cg == false && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬁");
-        }
-        if (hg == true && hd == false && cg == false && cd == false && bg == false && bd == false)
-        {
-            pos_char(x, y, "🬀");
-        }
-         
+            indice *= 2;
+            if (cases[j]) {
+                indice += 1;
+            }
+        }      
+
+        pos_char(x, y, caractere[indice]);
+
     }
 }
