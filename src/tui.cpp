@@ -100,15 +100,17 @@ void TUI::pos_char(int x, int y, std::string c) {
 }
 
 void TUI::pos_str(int i, std::string s) {
-    int tmp = x(i);
-    for (auto c : s) {
-        if (c != '\n') {
-            std::string tmp2;
-            tmp2.push_back(c);
-            pos_char(i, tmp2);
-            i++;
-        } else {
-            i += tmp + width - x(i);
+    if (i < width * heith){
+        int tmp = x(i);
+        for (auto c : s) {
+            if (c != '\n') {
+                std::string tmp2;
+                tmp2.push_back(c);
+                pos_char(i, tmp2);
+                i++;
+            } else {
+                i += tmp + width - x(i);
+            }
         }
     }
 }
