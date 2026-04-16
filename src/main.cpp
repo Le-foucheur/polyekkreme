@@ -26,11 +26,11 @@ int main() {
     TUI tuigauche = TUI((w.ws_col - 1) / 3, w.ws_row, true);
     TUI_PENDULE tuidroit = TUI_PENDULE( 2 * (w.ws_col - 1) / 3, w.ws_row, tuigauche.w() + 1);
 
-    Maestro maitre = Maestro(2, 0.001, 100);
+    Maestro maitre = Maestro(2, 0.001, 4);
     
     Pendule test1 = Pendule(0, 0.5, 1, M_PI_2 + M_PI_4, 0);
 
-    Pendule test2 = Pendule(1, 0.5, 0.5, 0, 0, &test1);
+    Pendule test2 = Pendule(1, 0.5, 0.5, -M_PI_4, 0, &test1);
 
     maitre.add_pendule(&test1);
     maitre.add_pendule(&test2);
