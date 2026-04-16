@@ -140,80 +140,80 @@ void Maestro::calcule_temp_plus_1() {
         this->list_pendule[0]->omega(u + 1./6. * (ku1 + 2 * ku2 + 2 * ku3 + ku4));
         this->list_pendule[1]->omega(v + 1./6. * (kv1 + 2 * kv2 + 2 * kv3 + kv4));
 
-    } else if (nb_pendule > 2 || nb_pendule == 1) {
-
-        double x[nb_pendule];
-        double v[nb_pendule];
-        double l[nb_pendule];
-        double m[nb_pendule];
-
-        double kx1[nb_pendule];
-        double kv1[nb_pendule];
-
-        double kx2[nb_pendule];
-        double kv2[nb_pendule];
-
-        double kx3[nb_pendule];
-        double kv3[nb_pendule];
-
-        double kx4[nb_pendule];
-        double kv4[nb_pendule];
-
-        //init vecteur
-        for (int i = 0; i < nb_pendule; i++) {
-            x[i] = list_pendule[i]->theta();
-            v[i] = list_pendule[i]->omega();
-            l[i] = list_pendule[i]->r();
-            m[i] = list_pendule[i]->m();
-        }
-
-        //calc k1
-        for (int i = 0; i < nb_pendule; i++) {
-            kx1[i] = v[i] * pas;
-            kv1[i] = n_pendule(i, x, v, l, m, grav);
-        }
-
-        //calc k2
-        double tmpx[nb_pendule];
-        double tmpv[nb_pendule];
-        for (int i = 0; i < nb_pendule; i++){
-            tmpx[i] = x[i] + kx1[i] / 2.;
-            tmpv[i] = v[i] + kv1[i] / 2.;
-        }
-        for (int i = 0; i < nb_pendule; i++){
-            kx2[i] = pas * tmpv[i];
-            kv2[i] = pas * n_pendule(i, tmpx, tmpv, l, m, grav);
-        }
-
-        //calc k3
-        double tmp1x[nb_pendule];
-        double tmp1v[nb_pendule];
-        for (int i = 0; i < nb_pendule; i++){
-            tmp1x[i] = x[i] + kx2[i] / 2.;
-            tmp1v[i] = v[i] + kv2[i] / 2.;
-        }
-        for (int i = 0; i < nb_pendule; i++){
-            kx3[i] = pas * tmp1v[i];
-            kv3[i] = pas * n_pendule(i, tmp1x, tmp1v, l, m, grav);
-        }
-
-        //calc k4
-        double tmp2x[nb_pendule];
-        double tmp2v[nb_pendule];
-        for (int i = 0; i < nb_pendule; i++){
-            tmp2x[i] = x[i] + kx3[i];
-            tmp2v[i] = v[i] + kv3[i];
-        }
-        for (int i = 0; i < nb_pendule; i++){
-            kx3[i] = pas * tmp2v[i];
-            kv3[i] = pas * n_pendule(i, tmp2x, tmp2v, l, m, grav);
-        }
-
-        //update des coordonées et des vitesses
-        for (int i = 0; i < nb_pendule; i++){
-            this->list_pendule[i]->theta(x[i] + 1. / 6. * (kx1[i] + 2. * kx2[i] + 2. * kx3[i] + kx4[i]));
-            this->list_pendule[i]->omega(v[i] + 1. / 6. * (kv1[i] + 2. * kv2[i] + 2. * kv3[i] + kv4[i]));
-        }
+//    } else if (nb_pendule > 2 || nb_pendule == 1) {
+//
+//        double x[nb_pendule];
+//        double v[nb_pendule];
+//        double l[nb_pendule];
+//        double m[nb_pendule];
+//
+//        double kx1[nb_pendule];
+//        double kv1[nb_pendule];
+//
+//        double kx2[nb_pendule];
+//        double kv2[nb_pendule];
+//
+//        double kx3[nb_pendule];
+//        double kv3[nb_pendule];
+//
+//        double kx4[nb_pendule];
+//        double kv4[nb_pendule];
+//
+//        //init vecteur
+//        for (int i = 0; i < nb_pendule; i++) {
+//            x[i] = list_pendule[i]->theta();
+//            v[i] = list_pendule[i]->omega();
+//            l[i] = list_pendule[i]->r();
+//            m[i] = list_pendule[i]->m();
+//        }
+//
+//        //calc k1
+//        for (int i = 0; i < nb_pendule; i++) {
+//            kx1[i] = v[i] * pas;
+//            kv1[i] = n_pendule(i, x, v, l, m, grav);
+//        }
+//
+//        //calc k2
+//        double tmpx[nb_pendule];
+//        double tmpv[nb_pendule];
+//        for (int i = 0; i < nb_pendule; i++){
+//            tmpx[i] = x[i] + kx1[i] / 2.;
+//            tmpv[i] = v[i] + kv1[i] / 2.;
+//        }
+//        for (int i = 0; i < nb_pendule; i++){
+//            kx2[i] = pas * tmpv[i];
+//            kv2[i] = pas * n_pendule(i, tmpx, tmpv, l, m, grav);
+//        }
+//
+//        //calc k3
+//        double tmp1x[nb_pendule];
+//        double tmp1v[nb_pendule];
+//        for (int i = 0; i < nb_pendule; i++){
+//            tmp1x[i] = x[i] + kx2[i] / 2.;
+//            tmp1v[i] = v[i] + kv2[i] / 2.;
+//        }
+//        for (int i = 0; i < nb_pendule; i++){
+//            kx3[i] = pas * tmp1v[i];
+//            kv3[i] = pas * n_pendule(i, tmp1x, tmp1v, l, m, grav);
+//        }
+//
+//        //calc k4
+//        double tmp2x[nb_pendule];
+//        double tmp2v[nb_pendule];
+//        for (int i = 0; i < nb_pendule; i++){
+//            tmp2x[i] = x[i] + kx3[i];
+//            tmp2v[i] = v[i] + kv3[i];
+//        }
+//        for (int i = 0; i < nb_pendule; i++){
+//            kx3[i] = pas * tmp2v[i];
+//            kv3[i] = pas * n_pendule(i, tmp2x, tmp2v, l, m, grav);
+//        }
+//
+//        //update des coordonées et des vitesses
+//        for (int i = 0; i < nb_pendule; i++){
+//            this->list_pendule[i]->theta(x[i] + 1. / 6. * (kx1[i] + 2. * kx2[i] + 2. * kx3[i] + kx4[i]));
+//            this->list_pendule[i]->omega(v[i] + 1. / 6. * (kv1[i] + 2. * kv2[i] + 2. * kv3[i] + kv4[i]));
+//        }
 
 
     } else {
