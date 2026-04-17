@@ -98,9 +98,9 @@ double double_pendule_g(double x, double y, double u, double v, double l1, doubl
     return (-v * v * m2 * l2 * cos(Dtetha) * sin(Dtetha) + (m1 + m2) * (g * sin(x) * cos(Dtetha) - l1 * u * u * sin(Dtetha) - g * sin(y))) / ((m1 + m2) * l2 - m2 * l2 * cos(Dtetha) * cos(Dtetha));
 }
 
-double n_pendule(int i, double* x, double* v, double* l, double* m, double g) {
-    
-}
+//double n_pendule(int i, double* x, double* v, double* l, double* m, double g) {
+//    
+//}
 
 //calcule une ittération
 void Maestro::calcule_temp_plus_1() {
@@ -258,7 +258,7 @@ void Maestro::calcule_tmax() {
     fprintf(portraifile, "\n");
     fprintf(energiefile, "\n");
 
-    for (double _ = temps; temps <= tempsmax;) {
+    for (; temps <= tempsmax;) {
         fprintf(savefile, "%0.3g;", temps);
         if (nb_pendule == 2 ){
             fprintf(energiefile, "%0.3g;", temps);

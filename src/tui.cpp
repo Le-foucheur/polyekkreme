@@ -620,7 +620,7 @@ void TUI_PENDULE::transfere_sub_to_screen() {
         bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
 
         int indice = 0;
-        for (int j = 0; j < 6; j++)
+        for (int j = 0; j < 8; j++)
         {
             indice *= 2;
             if (cases[j]) {
