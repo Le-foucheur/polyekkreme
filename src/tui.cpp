@@ -131,17 +131,16 @@ int TUI::y(int i) {
 }
 
 void TUI::print_screen() {
-    printf("\x1b[1;1H");
-    printf("\x1b[%dC", offset);
+    std::string ecran = "\x1b[1;1H\x1b[" + std::to_string(offset) + "C";
     int taille = width * heith;
     for(int i = 0; i < taille; i++) {
-        printf("%s", screen[i].c_str());
+        ecran += screen[i];
         if (i % width == width - 1 && i != taille - 1)
         {
-            printf("\n");
-            printf("\x1b[%dC", offset);
+            ecran += "\n\x1b[" + std::to_string(offset) + "C";
         }
     }
+    printf("%s", ecran.c_str());
 }
 
 void TUI::add_info(bool pendule, Maestro m) {
