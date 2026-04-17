@@ -75,13 +75,4 @@ class TUI_PENDULE : public TUI {
     bool* sous_screen = NULL;
 };
 
-template <typename T>
-T max(T a, T b) {
-    if (a >= b) {
-        return a;
-    } else {
-        return b;
-    }
-}
-
 #endif

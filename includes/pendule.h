@@ -16,6 +16,7 @@ public:
     double y();
     double r();
     double theta();
+    double oldtheta();
     double omega();
     double m();
     Pendule* attacher();
@@ -24,6 +25,7 @@ public:
     void id(int id);
     void r(double r);
     void theta(double theta);
+    void oldtheta(double theta);
     void omega(double omega);
     void m(double m);
 
@@ -34,6 +36,7 @@ private:
 
     int identifieur;
     double th;
+    double oldth;
     double longeur;
     double vit_angl;
     double masse;

@@ -26,14 +26,15 @@ int main() {
     TUI tuigauche = TUI((w.ws_col - 1) / 3, w.ws_row, true);
     TUI_PENDULE tuidroit = TUI_PENDULE( 2 * (w.ws_col - 1) / 3, w.ws_row, tuigauche.w() + 1);
 
-    Maestro maitre = Maestro(2, 0.001, 4);
+    Maestro maitre = Maestro(10, 0.001, 10);
     
-    Pendule test1 = Pendule(0, 0.5, 1, M_PI_2 + M_PI_4, 0);
+    Pendule test1 = Pendule(0, 0.5, 1, 1.799, 0);
 
-    Pendule test2 = Pendule(1, 0.5, 0.5, -M_PI_4, 0, &test1);
+    Pendule test2 = Pendule(1, 0.5, 0.5, 1.019, 0, &test1);
 
     maitre.add_pendule(&test1);
     maitre.add_pendule(&test2);
+
 
     maitre.init_save();
     
@@ -55,14 +56,15 @@ int main() {
         //clean les pendules pour retiré les artefacte
         tuidroit.sub_screen_clean();
         tuidroit.screen_clean();
+        tuigauche.screen_clean();
         tuidroit.transfere_sub_to_screen();
 
         //on retire le temps consomé par le procésus pour rendre le tout fluide
         clock_t diff = clock() - now;
-        int dodo = (int)diff / (CLOCKS_PER_SEC / 1000); 
+        int dodo = (int)((double)diff / (1000.)); 
         if (dodo <= 70)
         {
-            usleep(dodo);
+            usleep(70);
         }
     }
     printf("\x1b[?1049l\x1b[?25h\x1b[?47l");

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include <stdio.h>
+#include <tgmath.h>
 #include "pendule.h"
 
 /*  Les constructeur et desctruceur    */
@@ -18,6 +19,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0, Pendu
     this->masse = m;
     this->longeur = r;
     this->th = theta0;
+    this->oldth = theta0 - omega0;
     this->vit_angl = omega0;
     this->attache = parent;
 }
@@ -27,6 +29,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0){
     this->masse = m;
     this->longeur = r;
     this->th = theta0;
+    this->oldth = theta0 - omega0;
     this->vit_angl = omega0;
     this->attache = NULL;
 }
@@ -43,6 +46,10 @@ double Pendule::r() {
 
 double Pendule::theta() {
     return th;
+}
+
+double Pendule::oldtheta() {
+    return oldth;
 }
 
 double Pendule::omega() {
@@ -89,6 +96,10 @@ void Pendule::r(double r) {
 
 void Pendule::theta(double theta) {
     this->th = theta;
+}
+
+void Pendule::oldtheta(double theta) {
+    this->oldth = theta;
 }
 
 void Pendule::omega(double omega) {

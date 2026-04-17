@@ -14,6 +14,8 @@ class Maestro {
         double dt();
         double tmax();
         double t();
+        double l_totale();
+        double l_max();
         int nb_p();
         int nb_pmax();
 
@@ -38,7 +40,18 @@ class Maestro {
         double grav = 9.81;
         double pas;
         double tempsmax;
+        double lmax = 0;
+        double ltot = 0;
         Pendule** list_pendule;
 };
+
+template <typename T>
+T max(T a, T b) {
+    if (a >= b) {
+        return a;
+    } else {
+        return b;
+    }
+}
 
 #endif

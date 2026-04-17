@@ -19,6 +19,16 @@ Maestro::Maestro(int nbmax, double dt, double tmax) {
     this->pas = dt;
     this->tempsmax = tmax;
     this->list_pendule = (Pendule**)malloc(sizeof(Pendule*) * nbmax);
+    
+    double tmpltot = 0;
+    double tmplmax = 0;
+    for (int i = 0; i < nb_pendule; i++) {
+        double tmp = list_pendule[i]->r();
+        tmpltot += tmp;
+        tmplmax = max(tmp, tmplmax);
+    }
+    this->lmax = tmplmax;
+    this->ltot = tmpltot;
 } 
 
 /*      Get     */
@@ -33,6 +43,14 @@ double Maestro::dt() {
 
 double Maestro::tmax() {
     return tempsmax;
+}
+
+double Maestro::l_max() {
+    return lmax;
+}
+
+double Maestro::l_totale() {
+    return ltot;
 }
 
 double Maestro::t() {
@@ -54,6 +72,8 @@ void Maestro::add_pendule(Pendule* pendule) {
     }
     this->list_pendule[nb_pendule] = pendule;
     this->nb_pendule += 1;
+    this->ltot = ltot + pendule->r();
+    this->lmax = max (lmax, pendule->r());
 }
 
 void Maestro::dt(double dt) {
@@ -101,6 +121,23 @@ double double_pendule_g(double x, double y, double u, double v, double l1, doubl
 //double n_pendule(int i, double* x, double* v, double* l, double* m, double g) {
 //    
 //}
+
+double transfo_cart_to_pol(double x, double y){
+    double coeftmp = 0;
+    if (y > 0) {
+        coeftmp = M_PI;
+    }
+
+    if (y != 0){
+        return - atan(x/y) + coeftmp;
+    } else {
+        if (x > 0) {
+            return M_PI_2;
+        } else {
+            return - M_PI_2;
+        }
+    }
+}
 
 //calcule une ittération
 void Maestro::calcule_temp_plus_1() {
@@ -215,6 +252,17 @@ void Maestro::calcule_temp_plus_1() {
 //            this->list_pendule[i]->omega(v[i] + 1. / 6. * (kv1[i] + 2. * kv2[i] + 2. * kv3[i] + kv4[i]));
 //        }
 
+//    } else if (nb_pendule > 2 || nb_pendule == 1) {
+//        for (int i = 0; i < nb_pendule; i++) {
+//            Pendule* pend = list_pendule[i];
+//
+//            double vit = pend->theta() - pend->oldtheta();
+//            this->list_pendule[i]->omega(vit);
+//
+//            this->list_pendule[i]->oldtheta(pend->theta());
+//            
+//            this->list_pendule[i]->theta(pend->theta() - vit + transfo_cart_to_pol(pend->x(), pend->y() - grav * pas) * pas * pas);
+//        }
 
     } else {
         printf("pas de methode pour %d pendule\n", nb_pendule);
