@@ -177,7 +177,7 @@ TUI_PENDULE::TUI_PENDULE() {
     this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
 
     this->sub_width = 2 * width;
-    this->sub_heith = 3 * heith;
+    this->sub_heith = 4 * heith;
     this->sous_screen = (bool *)malloc(sizeof(bool) * sub_width * sub_heith);
     for (int i = 0; i < width * heith; i++)
     {
@@ -198,7 +198,7 @@ TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset) {
     this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
 
     this->sub_width = 2 * width;
-    this->sub_heith = 3 * heith;
+    this->sub_heith = 4 * heith;
     this->sous_screen = (bool *)malloc(sizeof(bool) * sub_width * sub_heith);
     for (int i = 0; i < width * heith; i++)
     {
@@ -596,6 +596,8 @@ void TUI_PENDULE::sub_screen_clean() {
     }
 }
 
+const std::string caractere[256] = {" ", "𜺨", "𜺫", "🮂", "𜴀", "▘", "𜴁", "𜴂", "𜴃", "𜴄", "▝", "𜴅", "𜴆", "𜴇", "𜴈", "▀", "𜴉", "𜴊", "𜴋", "𜴌", "🯦", "𜴍", "𜴎", "𜴏", "𜴐", "𜴑", "𜴒", "𜴓", "𜴔", "𜴕", "𜴖", "𜴗", "𜴘", "𜴙", "𜴚", "𜴛", "𜴜", "𜴝", "𜴞", "𜴟", "🯧", "𜴠", "𜴡", "𜴢", "𜴣", "𜴤", "𜴥", "𜴦", "𜴧", "𜴨", "𜴩", "𜴪", "𜴫", "𜴬", "𜴭", "𜴮", "𜴯", "𜴰", "𜴱", "𜴲", "𜴳", "𜴴", "𜴵", "🮅", "𜺣", "𜴶", "𜴷", "𜴸", "𜴹", "𜴺", "𜴻", "𜴼", "𜴽", "𜴾", "𜴿", "𜵀", "𜵁", "𜵂", "𜵃", "𜵄", "▖", "𜵅", "𜵆", "𜵇", "𜵈", "▌", "𜵉", "𜵊", "𜵋", "𜵌", "▞", "𜵍", "𜵎", "𜵏", "𜵐", "▛", "𜵑", "𜵒", "𜵓", "𜵔", "𜵕", "𜵖", "𜵗", "𜵘", "𜵙", "𜵚", "𜵛", "𜵜", "𜵝", "𜵞", "𜵟", "𜵠", "𜵡", "𜵢", "𜵣", "𜵤", "𜵥", "𜵦", "𜵧", "𜵨", "𜵩", "𜵪", "𜵫", "𜵬", "𜵭", "𜵮", "𜵯", "𜵰", "𜺠", "𜵱", "𜵲", "𜵳", "𜵴", "𜵵", "𜵶", "𜵷", "𜵸", "𜵹", "𜵺", "𜵻", "𜵼", "𜵽", "𜵾", "𜵿", "𜶀", "𜶁", "𜶂", "𜶃", "𜶄", "𜶅", "𜶆", "𜶇", "𜶈", "𜶉", "𜶊", "𜶋", "𜶌", "𜶍", "𜶎", "𜶏", "▗", "𜶐", "𜶑", "𜶒", "𜶓", "▚", "𜶔", "𜶕", "𜶖", "𜶗", "▐", "𜶘", "𜶙", "𜶚", "𜶛", "▜", "𜶜", "𜶝", "𜶞", "𜶟", "𜶠", "𜶡", "𜶢", "𜶣", "𜶤", "𜶥", "𜶦", "𜶧", "𜶨", "𜶩", "𜶪", "𜶫", "▂", "𜶬", "𜶭", "𜶮", "𜶯", "𜶰", "𜶱", "𜶲", "𜶳", "𜶴", "𜶵", "𜶶", "𜶷", "𜶸", "𜶹", "𜶺", "𜶻", "𜶼", "𜶽", "𜶾", "𜶿", "𜷀", "𜷁", "𜷂", "𜷃", "𜷄", "𜷅", "𜷆", "𜷇", "𜷈", "𜷉", "𜷊", "𜷋", "𜷌", "𜷍", "𜷎", "𜷏", "𜷐", "𜷑", "𜷒", "𜷓", "𜷔", "𜷕", "𜷖", "𜷗", "𜷘", "𜷙", "𜷚", "▄", "𜷛", "𜷜", "𜷝", "𜷞", "▙", "𜷟", "𜷠", "𜷡", "𜷢", "▟", "𜷣", "▆", "𜷤", "𜷥", "█"};
+
 void TUI_PENDULE::transfere_sub_to_screen() {
     for (int i = 0; i < width * heith; i++) {
         // les x,y de l’ecran
@@ -604,29 +606,18 @@ void TUI_PENDULE::transfere_sub_to_screen() {
 
         // les x,y du sous ecran de la case haut gauche de l’ecran
         int sub_x = 2 * x;
-        int sub_y = 3 * y;
-
-        //bool hg = at(sub_x, sub_y); // pixel haut gauche
-        //bool hd = at(sub_x+1, sub_y); // pixel haut droit
-        //bool chg = at(sub_x, sub_y+1); // pixel centre gauche
-        //bool chd = at(sub_x+1, sub_y+1); // pixel centre droit
-        //bool cbg = at(sub_x, sub_y+2); // pixel bas gauche
-        //bool cbd = at(sub_x+1, sub_y+2); // pixel bas droit
-        //bool bg = at(sub_x, sub_y+3); // pixel bas gauche
-        //bool bd = at(sub_x+1, sub_y+3); // pixel bas droit
+        int sub_y = 4 * y;
 
         bool hg = at(sub_x, sub_y); // pixel haut gauche
         bool hd = at(sub_x+1, sub_y); // pixel haut droit
-        bool cg = at(sub_x, sub_y+1); // pixel centre gauche
-        bool cd = at(sub_x+1, sub_y+1); // pixel centre droit
-        bool bg = at(sub_x, sub_y+2); // pixel bas gauche
-        bool bd = at(sub_x+1, sub_y+2); // pixel bas droit
+        bool chg = at(sub_x, sub_y+1); // pixel centre gauche
+        bool chd = at(sub_x+1, sub_y+1); // pixel centre droit
+        bool cbg = at(sub_x, sub_y+2); // pixel bas gauche
+        bool cbd = at(sub_x+1, sub_y+2); // pixel bas droit
+        bool bg = at(sub_x, sub_y+3); // pixel bas gauche
+        bool bd = at(sub_x+1, sub_y+3); // pixel bas droit
 
-        //bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
-        //std::string caractere[256] = {" ", "𜺨", "𜺫", "🮂", "𜴀", "▘", "𜴁", "𜴂", "𜴃", "𜴄", "▝", "𜴅", "𜴆", "𜴇", "𜴈", "▀", "𜴉", "𜴊", "𜴋", "𜴌", "🯦", "𜴍", "𜴎", "𜴏", "𜴐", "𜴑", "𜴒", "𜴓", "𜴔", "𜴕", "𜴖", "𜴗", "𜴘", "𜴙", "𜴚", "𜴛", "𜴜", "𜴝", "𜴞", "𜴟", "🯧", "𜴠", "𜴡", "𜴢", "𜴣", "𜴤", "𜴥", "𜴦", "𜴧", "𜴨", "𜴩", "𜴪", "𜴫", "𜴬", "𜴭", "𜴮", "𜴯", "𜴰", "𜴱", "𜴲", "𜴳", "𜴴", "𜴵", "🮅", "𜺣", "𜴶", "𜴷", "𜴸", "𜴹", "𜴺", "𜴻", "𜴼", "𜴽", "𜴾", "𜴿", "𜵀", "𜵁", "𜵂", "𜵃", "𜵄", "▖", "𜵅", "𜵆", "𜵇", "𜵈", "▌", "𜵉", "𜵊", "𜵋", "𜵌", "▞", "𜵍", "𜵎", "𜵏", "𜵐", "▛", "𜵑", "𜵒", "𜵓", "𜵔", "𜵕", "𜵖", "𜵗", "𜵘", "𜵙", "𜵚", "𜵛", "𜵜", "𜵝", "𜵞", "𜵟", "𜵠", "𜵡", "𜵢", "𜵣", "𜵤", "𜵥", "𜵦", "𜵧", "𜵨", "𜵩", "𜵪", "𜵫", "𜵬", "𜵭", "𜵮", "𜵯", "𜵰", "𜺠", "𜵱", "𜵲", "𜵳", "𜵴", "𜵵", "𜵶", "𜵷", "𜵸", "𜵹", "𜵺", "𜵻", "𜵼", "𜵽", "𜵾", "𜵿", "𜶀", "𜶁", "𜶂", "𜶃", "𜶄", "𜶅", "𜶆", "𜶇", "𜶈", "𜶉", "𜶊", "𜶋", "𜶌", "𜶍", "𜶎", "𜶏", "▗", "𜶐", "𜶑", "𜶒", "𜶓", "▚", "𜶔", "𜶕", "𜶖", "𜶗", "▐", "𜶘", "𜶙", "𜶚", "𜶛", "▜", "𜶜", "𜶝", "𜶞", "𜶟", "𜶠", "𜶡", "𜶢", "𜶣", "𜶤", "𜶥", "𜶦", "𜶧", "𜶨", "𜶩", "𜶪", "𜶫", "▂", "𜶬", "𜶭", "𜶮", "𜶯", "𜶰", "𜶱", "𜶲", "𜶳", "𜶴", "𜶵", "𜶶", "𜶷", "𜶸", "𜶹", "𜶺", "𜶻", "𜶼", "𜶽", "𜶾", "𜶿", "𜷀", "𜷁", "𜷂", "𜷃", "𜷄", "𜷅", "𜷆", "𜷇", "𜷈", "𜷉", "𜷊", "𜷋", "𜷌", "𜷍", "𜷎", "𜷏", "𜷐", "𜷑", "𜷒", "𜷓", "𜷔", "𜷕", "𜷖", "𜷗", "𜷘", "𜷙", "𜷚", "▄", "𜷛", "𜷜", "𜷝", "𜷞", "▙", "𜷟", "𜷠", "𜷡", "𜷢", "▟", "𜷣", "▆", "𜷤", "𜷥", "█"};
-        
-        bool cases[6] = {bd, bg, cd, cg, hd, hg}; // représentation binaire en bit de point faible
-        std::string caractere[64] = {" ", "🬀", "🬁", "🬂", "🬃", "🬄", "🬅", "🬆", "🬇", "🬈", "🬉", "🬊", "🬋", "🬌", "🬍", "🬎", "🬏", "🬐", "🬑", "🬒", "🬓", "▌", "🬔", "🬕", "🬖", "🬗", "🬘", "🬙", "🬚", "🬛", "🬜", "🬝", "🬞", "🬟", "🬠", "🬡", "🬢", "🬣", "🬤", "🬥", "🬦", "🬧", "▐", "🬨", "🬩", "🬪", "🬫", "🬬", "🬭", "🬮", "🬯", "🬰", "🬱", "🬲", "🬳", "🬴", "🬵", "🬶", "🬷", "🬸", "🬹", "🬺", "🬻", "█"};
+        bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
 
         int indice = 0;
         for (int j = 0; j < 6; j++)

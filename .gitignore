@@ -41,3 +41,4 @@
 *.dwo
 
 target/*.csv
+target/plot/*.pdf
