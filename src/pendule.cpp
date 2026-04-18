@@ -19,7 +19,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0, Pendu
     this->masse = m;
     this->longeur = r;
     this->th = theta0;
-    this->oldth = theta0 - omega0;
+    this->oldvit = omega0;
     this->vit_angl = omega0;
     this->attache = parent;
 }
@@ -29,7 +29,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0){
     this->masse = m;
     this->longeur = r;
     this->th = theta0;
-    this->oldth = theta0 - omega0;
+    this->oldvit = omega0;
     this->vit_angl = omega0;
     this->attache = NULL;
 }
@@ -48,8 +48,8 @@ double Pendule::theta() {
     return th;
 }
 
-double Pendule::oldtheta() {
-    return oldth;
+double Pendule::oldomega() {
+    return oldvit;
 }
 
 double Pendule::omega() {
@@ -95,11 +95,11 @@ void Pendule::r(double r) {
 }
 
 void Pendule::theta(double theta) {
-    this->th = theta;
+    this->th = std::remainder(theta, 2 * M_PI);
 }
 
-void Pendule::oldtheta(double theta) {
-    this->oldth = theta;
+void Pendule::oldomega(double omega) {
+    this->oldvit = omega;
 }
 
 void Pendule::omega(double omega) {

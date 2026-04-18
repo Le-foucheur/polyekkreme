@@ -143,17 +143,31 @@ void TUI::print_screen() {
     printf("%s", ecran.c_str());
 }
 
-void TUI::add_info(bool pendule, Maestro m) {
-    std::string s = "pas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
+void TUI::add_info(bool pendule, Maestro m, double fps) {
+    Pendule** list = m.get_pendule();
+
+    std::string s = "\nfps = " + std::to_string((int)round(fps)) + "\n\npas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
+    if (m.nb_p() == 2 ){
+
+        double m1 = list[0]->m();
+        double l1 = list[0]->r();
+        double o1 = list[0]->omega();
+        double m2 = list[1]->m();
+        double l2 = list[1]->r();
+        double o2 = list[1]->omega();
+        double D = list[0]->theta() - list[1]->theta();
+
+        double Ec = 1. / 2. * m1 * l1 * l1 * o1 * o1 + 1./2. * m2 * (l1 * l1 * o1 * o1 + l2 * l2 * o2 * o2 + 2 * l1 * l2 * o1 * o2 * cos(D));
+        double Ep = 9.81 * (m1 * list[0]->y() + m2 * list[1]->y());
+        s += "\n\nEp = " + std::to_string(Ep) + "\nEc = " + std::to_string(Ec) + "\nEm = " + std::to_string(Ec + Ep);
+    }
     if (pendule) {
-        Pendule** list = m.get_pendule();
         for (int i = 0; i < m.nb_p(); i++)
         {
             s += "\n\nid: " + std::to_string(list[i]->id());
             s += "\n      masse: " + std::to_string(list[i]->m());
             s += "\n      coord cart: " + std::to_string(list[i]->x()) + ", " + std::to_string(list[i]->y());
             s += "\n      coord pol: " + std::to_string(list[i]->r()) + ", " + std::to_string(list[i]->theta());
-            s += "\n      old coord pol: " + std::to_string(list[i]->r()) + ", " + std::to_string(list[i]->oldtheta());
             s += "\n      vitesse angulaire: " + std::to_string(list[i]->omega());
         }
     }
@@ -606,18 +620,14 @@ void TUI_PENDULE::transfere_sub_to_screen() {
         int x = i % width;
         int y = i / width;
 
-        // les x,y du sous ecran de la case haut gauche de l’ecran
-        int sub_x = 2 * x;
-        int sub_y = 4 * y;
-
-        bool hg = at(sub_x, sub_y); // pixel haut gauche
-        bool hd = at(sub_x+1, sub_y); // pixel haut droit
-        bool chg = at(sub_x, sub_y+1); // pixel centre gauche
-        bool chd = at(sub_x+1, sub_y+1); // pixel centre droit
-        bool cbg = at(sub_x, sub_y+2); // pixel bas gauche
-        bool cbd = at(sub_x+1, sub_y+2); // pixel bas droit
-        bool bg = at(sub_x, sub_y+3); // pixel bas gauche
-        bool bd = at(sub_x+1, sub_y+3); // pixel bas droit
+        bool hg = at( 2 * x,  4 * y ); // pixel haut gauche
+        bool hd = at( 2 * x+1,  4 * y ); // pixel haut droit
+        bool chg = at( 2 * x,  4 * y +1); // pixel centre gauche
+        bool chd = at( 2 * x+1,  4 * y +1); // pixel centre droit
+        bool cbg = at( 2 * x,  4 * y +2); // pixel bas gauche
+        bool cbd = at( 2 * x+1,  4 * y +2); // pixel bas droit
+        bool bg = at( 2 * x,  4 * y +3); // pixel bas gauche
+        bool bd = at( 2 * x+1,  4 * y +3); // pixel bas droit
 
         bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
 

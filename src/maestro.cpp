@@ -118,9 +118,26 @@ double double_pendule_g(double x, double y, double u, double v, double l1, doubl
     return (-v * v * m2 * l2 * cos(Dtetha) * sin(Dtetha) + (m1 + m2) * (g * sin(x) * cos(Dtetha) - l1 * u * u * sin(Dtetha) - g * sin(y))) / ((m1 + m2) * l2 - m2 * l2 * cos(Dtetha) * cos(Dtetha));
 }
 
-//double n_pendule(int i, double* x, double* v, double* l, double* m, double g) {
-//    
-//}
+double n_pendule(int i, double* x, double* v, double* l, double g, Maestro m) {
+        double tmp1 = 0;
+        double tmp2 = 0;
+        for (int j = 0; j < i; j++){
+            double Dtheta_avant = x[i] - x[j];
+            double acc_avant = (v[j] - m.get_pendule()[j]->oldomega()) / m.dt();
+
+            tmp1 += acc_avant * cos(Dtheta_avant) + v[j] * v[j] * sin(Dtheta_avant);
+        }
+
+        for (int j = i + 1; j < m.nb_p(); j++){
+            double Dtheta_apres = x[j] - x[i];
+            double acc_apres = (v[j] - m.get_pendule()[j]->oldomega()) / m.dt();
+
+            tmp2 +=  (m.nb_p() + 1 - j) * ( acc_apres * cos(Dtheta_apres) - v[j] * v[j] * sin(Dtheta_apres) );
+        }
+
+
+        return - g / l[i] * sin(x[i]) - tmp1 - tmp2 / (m.nb_p() + 1 - i);
+}
 
 double transfo_cart_to_pol(double x, double y){
     double coeftmp = 0;
@@ -179,23 +196,23 @@ void Maestro::calcule_temp_plus_1() {
 
 //    } else if (nb_pendule > 2 || nb_pendule == 1) {
 //
-//        double x[nb_pendule];
-//        double v[nb_pendule];
-//        double l[nb_pendule];
-//        double m[nb_pendule];
-//
-//        double kx1[nb_pendule];
-//        double kv1[nb_pendule];
-//
-//        double kx2[nb_pendule];
-//        double kv2[nb_pendule];
-//
-//        double kx3[nb_pendule];
-//        double kv3[nb_pendule];
-//
-//        double kx4[nb_pendule];
-//        double kv4[nb_pendule];
-//
+//        double* x = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* v = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* l = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* m = (double *)malloc(sizeof(double) * nb_pendule);
+//        
+//        double* kx1 = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* kv1 = (double *)malloc(sizeof(double) * nb_pendule);
+//        
+//        double* kx2 = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* kv2 = (double *)malloc(sizeof(double) * nb_pendule);
+//        
+//        double* kx3 = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* kv3 = (double *)malloc(sizeof(double) * nb_pendule);
+//        
+//        double* kx4 = (double *)malloc(sizeof(double) * nb_pendule);
+//        double* kv4 = (double *)malloc(sizeof(double) * nb_pendule);
+//        
 //        //init vecteur
 //        for (int i = 0; i < nb_pendule; i++) {
 //            x[i] = list_pendule[i]->theta();
@@ -203,66 +220,106 @@ void Maestro::calcule_temp_plus_1() {
 //            l[i] = list_pendule[i]->r();
 //            m[i] = list_pendule[i]->m();
 //        }
-//
+//        
 //        //calc k1
 //        for (int i = 0; i < nb_pendule; i++) {
 //            kx1[i] = v[i] * pas;
-//            kv1[i] = n_pendule(i, x, v, l, m, grav);
+//            kv1[i] = n_pendule(i, x, v, l, grav, *this);
 //        }
-//
+//        
 //        //calc k2
-//        double tmpx[nb_pendule];
-//        double tmpv[nb_pendule];
+//        double* tmpx = (double*)malloc(sizeof(double) * nb_pendule);
+//        double* tmpv = (double*)malloc(sizeof(double) * nb_pendule);
 //        for (int i = 0; i < nb_pendule; i++){
 //            tmpx[i] = x[i] + kx1[i] / 2.;
 //            tmpv[i] = v[i] + kv1[i] / 2.;
 //        }
 //        for (int i = 0; i < nb_pendule; i++){
 //            kx2[i] = pas * tmpv[i];
-//            kv2[i] = pas * n_pendule(i, tmpx, tmpv, l, m, grav);
+//            kv2[i] = pas * n_pendule(i, tmpx, tmpv, l, grav, *this);
 //        }
 //
 //        //calc k3
-//        double tmp1x[nb_pendule];
-//        double tmp1v[nb_pendule];
+//        double* tmp1x = (double*)malloc(sizeof(double) * nb_pendule);
+//        double* tmp1v = (double*)malloc(sizeof(double) * nb_pendule);
 //        for (int i = 0; i < nb_pendule; i++){
 //            tmp1x[i] = x[i] + kx2[i] / 2.;
 //            tmp1v[i] = v[i] + kv2[i] / 2.;
 //        }
 //        for (int i = 0; i < nb_pendule; i++){
 //            kx3[i] = pas * tmp1v[i];
-//            kv3[i] = pas * n_pendule(i, tmp1x, tmp1v, l, m, grav);
+//            kv3[i] = pas * n_pendule(i, tmp1x, tmp1v, l, grav, *this);
 //        }
 //
 //        //calc k4
-//        double tmp2x[nb_pendule];
-//        double tmp2v[nb_pendule];
+//        double* tmp2x = (double*)malloc(sizeof(double) * nb_pendule);
+//        double* tmp2v = (double*)malloc(sizeof(double) * nb_pendule);
 //        for (int i = 0; i < nb_pendule; i++){
 //            tmp2x[i] = x[i] + kx3[i];
 //            tmp2v[i] = v[i] + kv3[i];
 //        }
 //        for (int i = 0; i < nb_pendule; i++){
 //            kx3[i] = pas * tmp2v[i];
-//            kv3[i] = pas * n_pendule(i, tmp2x, tmp2v, l, m, grav);
+//            kv3[i] = pas * n_pendule(i, tmp2x, tmp2v, l, grav, *this);
 //        }
 //
 //        //update des coordonées et des vitesses
 //        for (int i = 0; i < nb_pendule; i++){
 //            this->list_pendule[i]->theta(x[i] + 1. / 6. * (kx1[i] + 2. * kx2[i] + 2. * kx3[i] + kx4[i]));
+//            this->list_pendule[i]->oldomega(v[i]);
 //            this->list_pendule[i]->omega(v[i] + 1. / 6. * (kv1[i] + 2. * kv2[i] + 2. * kv3[i] + kv4[i]));
 //        }
+//        free(x);
+//        free(v);
+//        free(l);
+//        free(m);
+//        
+//        free(kx1);
+//        free(kv1);
+//        
+//        free(kx2);
+//        free(kv2);
+//        
+//        free(kx3);
+//        free(kv3);
+//        
+//        free(kx4);
+//        free(kv4);
+//        
+//        free(tmpv);
+//        free(tmpx);
+//        
+//        free(tmp1v);
+//        free(tmp1x);
+//        
+//        free(tmp2v);
+//        free(tmp2x);
 
-//    } else if (nb_pendule > 2 || nb_pendule == 1) {
-//        for (int i = 0; i < nb_pendule; i++) {
-//            Pendule* pend = list_pendule[i];
-//
-//            double vit = pend->theta() - pend->oldtheta();
-//            this->list_pendule[i]->omega(vit);
-//
-//            this->list_pendule[i]->oldtheta(pend->theta());
-//            
-//            this->list_pendule[i]->theta(pend->theta() - vit + transfo_cart_to_pol(pend->x(), pend->y() - grav * pas) * pas * pas);
-//        }
+    } else if (nb_pendule > 2 || nb_pendule == 1) {
+
+        double tmp2 = 0;
+        if(nb_pendule > 1 ){
+            tmp2 = list_pendule[1]->omega() * cos(list_pendule[1]->theta() - list_pendule[0]->theta());
+        }
+        double tmp = list_pendule[0]->theta() + pas * (list_pendule[0]->omega() + tmp2 - grav / list_pendule[0]->r() * sin(list_pendule[0]->theta()) );
+
+        this->list_pendule[0]->omega((tmp - list_pendule[0]->theta()) / pas);
+        this->list_pendule[0]->theta(tmp);
+
+        for (int i = 1; i < nb_pendule - 1; i++) {
+
+            double tmp1 = list_pendule[i]->theta() + pas * (list_pendule[i]->omega() + list_pendule[i - 1]->omega() * cos(list_pendule[i]->theta() - list_pendule[i - 1]->theta()) + list_pendule[i + 1]->omega() * cos(list_pendule[i + 1]->theta() - list_pendule[i]->theta()) - grav / list_pendule[i]->r() * sin(list_pendule[i]->theta()) );
+
+            this->list_pendule[i]->omega((tmp1 - list_pendule[i]->theta()) / pas);
+            this->list_pendule[i]->theta(tmp1);
+        }
+        if(nb_pendule != 1){
+            double tmp1 = list_pendule[nb_pendule - 1]->theta() + pas * (list_pendule[nb_pendule - 1]->omega() + list_pendule[nb_pendule - 2]->omega() * cos(list_pendule[nb_pendule - 1]->theta() - list_pendule[nb_pendule - 2]->theta()) - grav / list_pendule[nb_pendule - 1]->r() * sin(list_pendule[nb_pendule - 1]->theta()) );
+    
+            this->list_pendule[nb_pendule - 1]->omega((tmp1 - list_pendule[nb_pendule - 1]->theta()) / pas);
+            this->list_pendule[nb_pendule - 1]->theta(tmp1);
+
+        }
 
     } else {
         printf("pas de methode pour %d pendule\n", nb_pendule);

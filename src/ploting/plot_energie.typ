@@ -21,6 +21,11 @@
       lq.plot(t, Ep, smooth: true, mark: none, label: $E_p$),
       lq.plot(t, Ec, smooth: true, mark: none, label: $E_c$),
       lq.plot(t, Em, smooth: true, mark: none, label: $E_m$),
+
+      lq.xaxis(
+        label: $t$,
+      ),
+      lq.yaxis(label: none)
     ),
     caption: [Énergie cinétique ($E_c$), potentiel ($E_p$) et mécanique ($E_m$), au cours du temps],
   )
