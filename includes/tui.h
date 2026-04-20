@@ -28,7 +28,7 @@ class TUI {
     void pos_str(int x, int y, std::string s);
     void pos_str(int i, std::string s);
 
-    void add_info(bool pendule, Maestro m, double fps);
+    void add_info(bool pendule, Maestro m);
     void screen_clean();
 
     int x(int i);

@@ -143,10 +143,10 @@ void TUI::print_screen() {
     printf("%s", ecran.c_str());
 }
 
-void TUI::add_info(bool pendule, Maestro m, double fps) {
+void TUI::add_info(bool pendule, Maestro m) {
     Pendule** list = m.get_pendule();
 
-    std::string s = "\nfps = " + std::to_string((int)round(fps)) + "\n\npas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
+    std::string s = "pas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
     if (m.nb_p() == 2 ){
 
         double m1 = list[0]->m();
