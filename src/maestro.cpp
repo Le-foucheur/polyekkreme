@@ -397,19 +397,19 @@ void Maestro::calcule_tmax() {
 } 
 
 void Maestro::init_save() {
-    FILE *savefile = fopen("./target/pendulecoordo.csv", "w");
+    FILE *savefile = fopen("./target/data/pendulecoordo.csv", "w");
     if (savefile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/ballcoordo.csv");
         exit(1);
     }
-    FILE *portraifile = fopen("./target/penduleportrait.csv", "w");
+    FILE *portraifile = fopen("./target/data/penduleportrait.csv", "w");
     if (portraifile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleportrait.csv");
         exit(1);
     }
-    FILE *energiefile = fopen("./target/penduleenergie.csv", "w");
+    FILE *energiefile = fopen("./target/data/penduleenergie.csv", "w");
     if (energiefile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleenergie.csv");
@@ -432,19 +432,19 @@ void Maestro::init_save() {
 }
 
 void Maestro::save() {
-    FILE *savefile = fopen("./target/pendulecoordo.csv", "a");
+    FILE *savefile = fopen("./target/data/pendulecoordo.csv", "a");
     if (savefile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/ballcoordo.csv");
         exit(1);
     }
-    FILE *portraifile = fopen("./target/penduleportrait.csv", "a");
+    FILE *portraifile = fopen("./target/data/penduleportrait.csv", "a");
     if (portraifile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleportrait.csv");
         exit(1);
     }
-    FILE *energiefile = fopen("./target/penduleenergie.csv", "a");
+    FILE *energiefile = fopen("./target/data/penduleenergie.csv", "a");
     if (energiefile == NULL)
     {
         fprintf(stderr, "impossible de créé et ou d'ouvrir le fichier ./target/plot/penduleenergie.csv");

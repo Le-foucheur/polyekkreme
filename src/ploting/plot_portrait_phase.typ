@@ -2,7 +2,7 @@
 #import "@preview/lilaq:0.6.0" as lq
 
 #let (.., th1, o1, _) = lq.load-txt(
-  read("../../target/penduleportrait.csv"),
+  read("../../target/data/penduleportrait.csv"),
   delimiter: ";",
   skip-rows: 1,
   converters: x => x,

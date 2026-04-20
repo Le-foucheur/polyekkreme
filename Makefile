@@ -7,12 +7,12 @@ SRC = src/
 TARGET = target/
 
 build:
-	${CXX} -O3 -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}main
+	${CXX} -O3 -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}polyekkreme
 
 run:
 	make -s build
 	echo -e "lancement du programme\n\n"
-	./${TARGET}main
+	./${TARGET}polyekkreme
 
 plottraj:
 	typst compile --root=. ./src/ploting/plottraj.typ ./target/plot/plottraj.pdf
