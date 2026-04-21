@@ -7,6 +7,8 @@ SRC = src/
 TARGET = target/
 
 build:
+	mkdir target/data
+	mkdir target/plot
 	${CXX} -O3 -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}polyekkreme
 
 run:
