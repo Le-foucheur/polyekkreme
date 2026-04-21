@@ -6,7 +6,7 @@
 class Maestro {
     public:
         Maestro();
-        Maestro(int nbmax, double dt, double tmax);
+        Maestro(int nbmax, double dt, double tmax, double gravity);
         ~Maestro();
 
         //Get

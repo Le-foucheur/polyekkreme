@@ -12,12 +12,13 @@ Maestro::~Maestro() {
     //free(list_pendule);
 }
 
-Maestro::Maestro(int nbmax, double dt, double tmax) {
+Maestro::Maestro(int nbmax, double dt, double tmax, double gravity) {
     this->nb_max_pendule = nbmax;
     this->nb_pendule = 0;
     this->temps = 0;
     this->pas = dt;
     this->tempsmax = tmax;
+    this->grav = gravity;
     this->list_pendule = (Pendule**)malloc(sizeof(Pendule*) * nbmax);
     
     double tmpltot = 0;
@@ -67,7 +68,7 @@ int Maestro::nb_pmax() {
 
 void Maestro::add_pendule(Pendule* pendule) {
     if (nb_pendule >= nb_max_pendule) {
-        fprintf(stderr, "impossible d’ajouter des pendules");
+        fprintf(stderr, "impossible d’ajouter des pendules: %d / %d\n", nb_pendule, nb_max_pendule);
         exit(1);
     }
     this->list_pendule[nb_pendule] = pendule;
@@ -573,7 +574,7 @@ void Maestro::init_save() {
         exit(1);
     }
     fprintf(savefile, "t;");
-    for (int i = 0; i <= nb_pendule / 2; i++)
+    for (int i = 0; i <= nb_pendule; i++)
     {
         fprintf(savefile, "x%d;y%d;", i, i);
         fprintf(portraifile, "theta%d;omega%d;", i, i);
@@ -613,8 +614,8 @@ void Maestro::save() {
     fprintf(energiefile, "%0.3g;", temps);
 
     double Ec = 0, Ep = 0;
-    double x_curr = 0, y_curr = 0;   // Position accumulée
-    double vx_curr = 0, vy_curr = 0; // Vitesse accumulée
+    double x_curr = 0, y_curr = 0;
+    double vx_curr = 0, vy_curr = 0;
 
     for (int i = 0; i < nb_pendule; i++) {
         double th = list_pendule[i]->theta();
@@ -622,13 +623,11 @@ void Maestro::save() {
         double l  = list_pendule[i]->r();
         double mass = list_pendule[i]->m();
 
-        // On incrémente position et vitesse par rapport au segment précédent
         x_curr += l * sin(th);
         y_curr -= l * cos(th);
         vx_curr += l * om * cos(th);
         vy_curr += l * om * sin(th);
 
-        // Somme des énergies
         Ep += mass * grav * y_curr;
         Ec += 0.5 * mass * (vx_curr * vx_curr + vy_curr * vy_curr);
     }

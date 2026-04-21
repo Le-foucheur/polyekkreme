@@ -1,12 +1,13 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string>
 #include <cmath>
 #include "tui.h"
 #include "maestro.h"
 
-const std::string caractere[256] = {" ", "𜺨", "𜺫", "🮂", "𜴀", "▘", "𜴁", "𜴂", "𜴃", "𜴄", "▝", "𜴅", "𜴆", "𜴇", "𜴈", "▀", "𜴉", "𜴊", "𜴋", "𜴌", "🯦", "𜴍", "𜴎", "𜴏", "𜴐", "𜴑", "𜴒", "𜴓", "𜴔", "𜴕", "𜴖", "𜴗", "𜴘", "𜴙", "𜴚", "𜴛", "𜴜", "𜴝", "𜴞", "𜴟", "🯧", "𜴠", "𜴡", "𜴢", "𜴣", "𜴤", "𜴥", "𜴦", "𜴧", "𜴨", "𜴩", "𜴪", "𜴫", "𜴬", "𜴭", "𜴮", "𜴯", "𜴰", "𜴱", "𜴲", "𜴳", "𜴴", "𜴵", "🮅", "𜺣", "𜴶", "𜴷", "𜴸", "𜴹", "𜴺", "𜴻", "𜴼", "𜴽", "𜴾", "𜴿", "𜵀", "𜵁", "𜵂", "𜵃", "𜵄", "▖", "𜵅", "𜵆", "𜵇", "𜵈", "▌", "𜵉", "𜵊", "𜵋", "𜵌", "▞", "𜵍", "𜵎", "𜵏", "𜵐", "▛", "𜵑", "𜵒", "𜵓", "𜵔", "𜵕", "𜵖", "𜵗", "𜵘", "𜵙", "𜵚", "𜵛", "𜵜", "𜵝", "𜵞", "𜵟", "𜵠", "𜵡", "𜵢", "𜵣", "𜵤", "𜵥", "𜵦", "𜵧", "𜵨", "𜵩", "𜵪", "𜵫", "𜵬", "𜵭", "𜵮", "𜵯", "𜵰", "𜺠", "𜵱", "𜵲", "𜵳", "𜵴", "𜵵", "𜵶", "𜵷", "𜵸", "𜵹", "𜵺", "𜵻", "𜵼", "𜵽", "𜵾", "𜵿", "𜶀", "𜶁", "𜶂", "𜶃", "𜶄", "𜶅", "𜶆", "𜶇", "𜶈", "𜶉", "𜶊", "𜶋", "𜶌", "𜶍", "𜶎", "𜶏", "▗", "𜶐", "𜶑", "𜶒", "𜶓", "▚", "𜶔", "𜶕", "𜶖", "𜶗", "▐", "𜶘", "𜶙", "𜶚", "𜶛", "▜", "𜶜", "𜶝", "𜶞", "𜶟", "𜶠", "𜶡", "𜶢", "𜶣", "𜶤", "𜶥", "𜶦", "𜶧", "𜶨", "𜶩", "𜶪", "𜶫", "▂", "𜶬", "𜶭", "𜶮", "𜶯", "𜶰", "𜶱", "𜶲", "𜶳", "𜶴", "𜶵", "𜶶", "𜶷", "𜶸", "𜶹", "𜶺", "𜶻", "𜶼", "𜶽", "𜶾", "𜶿", "𜷀", "𜷁", "𜷂", "𜷃", "𜷄", "𜷅", "𜷆", "𜷇", "𜷈", "𜷉", "𜷊", "𜷋", "𜷌", "𜷍", "𜷎", "𜷏", "𜷐", "𜷑", "𜷒", "𜷓", "𜷔", "𜷕", "𜷖", "𜷗", "𜷘", "𜷙", "𜷚", "▄", "𜷛", "𜷜", "𜷝", "𜷞", "▙", "𜷟", "𜷠", "𜷡", "𜷢", "▟", "𜷣", "▆", "𜷤", "𜷥", "█"};
+const std::string caractere2x4[256] = {" ", "𜺨", "𜺫", "🮂", "𜴀", "▘", "𜴁", "𜴂", "𜴃", "𜴄", "▝", "𜴅", "𜴆", "𜴇", "𜴈", "▀", "𜴉", "𜴊", "𜴋", "𜴌", "🯦", "𜴍", "𜴎", "𜴏", "𜴐", "𜴑", "𜴒", "𜴓", "𜴔", "𜴕", "𜴖", "𜴗", "𜴘", "𜴙", "𜴚", "𜴛", "𜴜", "𜴝", "𜴞", "𜴟", "🯧", "𜴠", "𜴡", "𜴢", "𜴣", "𜴤", "𜴥", "𜴦", "𜴧", "𜴨", "𜴩", "𜴪", "𜴫", "𜴬", "𜴭", "𜴮", "𜴯", "𜴰", "𜴱", "𜴲", "𜴳", "𜴴", "𜴵", "🮅", "𜺣", "𜴶", "𜴷", "𜴸", "𜴹", "𜴺", "𜴻", "𜴼", "𜴽", "𜴾", "𜴿", "𜵀", "𜵁", "𜵂", "𜵃", "𜵄", "▖", "𜵅", "𜵆", "𜵇", "𜵈", "▌", "𜵉", "𜵊", "𜵋", "𜵌", "▞", "𜵍", "𜵎", "𜵏", "𜵐", "▛", "𜵑", "𜵒", "𜵓", "𜵔", "𜵕", "𜵖", "𜵗", "𜵘", "𜵙", "𜵚", "𜵛", "𜵜", "𜵝", "𜵞", "𜵟", "𜵠", "𜵡", "𜵢", "𜵣", "𜵤", "𜵥", "𜵦", "𜵧", "𜵨", "𜵩", "𜵪", "𜵫", "𜵬", "𜵭", "𜵮", "𜵯", "𜵰", "𜺠", "𜵱", "𜵲", "𜵳", "𜵴", "𜵵", "𜵶", "𜵷", "𜵸", "𜵹", "𜵺", "𜵻", "𜵼", "𜵽", "𜵾", "𜵿", "𜶀", "𜶁", "𜶂", "𜶃", "𜶄", "𜶅", "𜶆", "𜶇", "𜶈", "𜶉", "𜶊", "𜶋", "𜶌", "𜶍", "𜶎", "𜶏", "▗", "𜶐", "𜶑", "𜶒", "𜶓", "▚", "𜶔", "𜶕", "𜶖", "𜶗", "▐", "𜶘", "𜶙", "𜶚", "𜶛", "▜", "𜶜", "𜶝", "𜶞", "𜶟", "𜶠", "𜶡", "𜶢", "𜶣", "𜶤", "𜶥", "𜶦", "𜶧", "𜶨", "𜶩", "𜶪", "𜶫", "▂", "𜶬", "𜶭", "𜶮", "𜶯", "𜶰", "𜶱", "𜶲", "𜶳", "𜶴", "𜶵", "𜶶", "𜶷", "𜶸", "𜶹", "𜶺", "𜶻", "𜶼", "𜶽", "𜶾", "𜶿", "𜷀", "𜷁", "𜷂", "𜷃", "𜷄", "𜷅", "𜷆", "𜷇", "𜷈", "𜷉", "𜷊", "𜷋", "𜷌", "𜷍", "𜷎", "𜷏", "𜷐", "𜷑", "𜷒", "𜷓", "𜷔", "𜷕", "𜷖", "𜷗", "𜷘", "𜷙", "𜷚", "▄", "𜷛", "𜷜", "𜷝", "𜷞", "▙", "𜷟", "𜷠", "𜷡", "𜷢", "▟", "𜷣", "▆", "𜷤", "𜷥", "█"};
+const std::string caractere2x3[64] = {" ", "🬀", "🬁", "🬂", "🬃", "🬄", "🬅", "🬆", "🬇", "🬈", "🬉", "🬊", "🬋", "🬌", "🬍", "🬎", "🬏", "🬐", "🬑", "🬒", "🬓", "▌", "🬔", "🬕", "🬖", "🬗", "🬘", "🬙", "🬚", "🬛", "🬜", "🬝", "🬞", "🬟", "🬠", "🬡", "🬢", "🬣", "🬤", "🬥", "🬦", "🬧", "▐", "🬨", "🬩", "🬪", "🬫", "🬬", "🬭", "🬮", "🬯", "🬰", "🬱", "🬲", "🬳", "🬴", "🬵", "🬶", "🬷", "🬸", "🬹", "🬺", "🬻", "█"};
+
 
 TUI::TUI() {
     struct winsize w;
@@ -141,12 +142,28 @@ void TUI::print_screen() {
         }
     }
     printf("%s", ecran.c_str());
+    fflush(stdout);
 }
 
-void TUI::add_info(bool pendule, Maestro m) {
+bool mem(std::vector<int>* vec, int ele){
+    for (auto i: *vec){
+        if (i == ele){
+            return true;
+        }
+    }
+    return false;
+}
+
+void TUI::add_info(bool pendule, Maestro m, std::vector<int>* id_show) {
     Pendule** list = m.get_pendule();
 
-    std::string s = "pas: " + std::to_string(m.dt()) + "\ntemps / temps maxium: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax()) + "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
+    std::string s = "pas: " + std::to_string(m.dt());
+    if (m.tmax() >= 0) { 
+        s += "\ntemps / temps maximum: " + std::to_string(m.t()) + " / " + std::to_string(m.tmax());
+    } else {
+        s += "\ntemps: " + std::to_string(m.t()) ;
+    }
+    s += "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
     if (m.nb_p() == 2 ){
 
         double m1 = list[0]->m();
@@ -164,11 +181,14 @@ void TUI::add_info(bool pendule, Maestro m) {
     if (pendule) {
         for (int i = 0; i < m.nb_p(); i++)
         {
-            s += "\n\nid: " + std::to_string(list[i]->id());
-            s += "\n      masse: " + std::to_string(list[i]->m());
-            s += "\n      coord cart: " + std::to_string(list[i]->x()) + ", " + std::to_string(list[i]->y());
-            s += "\n      coord pol: " + std::to_string(list[i]->r()) + ", " + std::to_string(list[i]->theta());
-            s += "\n      vitesse angulaire: " + std::to_string(list[i]->omega());
+            //printf("%d & %d\n", list[i]->id(), mem(id_show, list[i]->id()));
+            if(mem(id_show, list[i]->id())){
+                s += "\n\nid: " + std::to_string(list[i]->id());
+                s += "\n      masse: " + std::to_string(list[i]->m());
+                s += "\n      coord cart: " + std::to_string(list[i]->x()) + ", " + std::to_string(list[i]->y());
+                s += "\n      coord pol: " + std::to_string(list[i]->r()) + ", " + std::to_string(list[i]->theta());
+                s += "\n      vitesse angulaire: " + std::to_string(list[i]->omega());
+            }
         }
     }
     pos_str(1, 1, s);
@@ -208,16 +228,21 @@ TUI_PENDULE::TUI_PENDULE() {
     }
 }
 
-TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset) {
+TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset, bool res) {
 
     this->width = w;
     this->heith = h;
     this->wall = false;
     this->offset = ofset;
     this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+    this->resolution = res;
 
     this->sub_width = 2 * width;
-    this->sub_heith = 4 * heith;
+    if (res){
+        this->sub_heith = 4 * heith;
+    } else {
+        this->sub_heith = 3 * heith;
+    }
     this->sous_screen = (bool *)malloc(sizeof(bool) * sub_width * sub_heith);
     for (int i = 0; i < width * heith; i++)
     {
@@ -592,8 +617,9 @@ void TUI_PENDULE::draw_pendule(Maestro m) {
         int x = convertx(pend->x(), m);
         int y = converty(pend->y(), m);
         
-        Pendule *parent = pend->attacher();
         circle(x,y);
+        
+        Pendule *parent = pend->attacher();
         if (parent != NULL)
         {
             int xp = convertx(parent->x(), m);
@@ -615,24 +641,52 @@ void TUI_PENDULE::sub_screen_clean() {
 
 
 void TUI_PENDULE::transfere_sub_to_screen() {
-    for (int i = 0; i < width * heith; i++) {
+    if (resolution) {
+        for (int i = 0; i < width * heith; i++) {
+            // les x,y de l’ecran
+            int x = i % width;
+            int y = i / width;
+    
+            bool hg = at( 2 * x,  4 * y ); // pixel haut gauche
+            bool hd = at( 2 * x+1,  4 * y ); // pixel haut droit
+            bool chg = at( 2 * x,  4 * y +1); // pixel centre gauche
+            bool chd = at( 2 * x+1,  4 * y +1); // pixel centre droit
+            bool cbg = at( 2 * x,  4 * y +2); // pixel bas gauche
+            bool cbd = at( 2 * x+1,  4 * y +2); // pixel bas droit
+            bool bg = at( 2 * x,  4 * y +3); // pixel bas gauche
+            bool bd = at( 2 * x+1,  4 * y +3); // pixel bas droit
+    
+            bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
+    
+            int indice = 0;
+            for (int j = 0; j < 8; j++)
+            {
+                indice *= 2;
+                if (cases[j]) {
+                    indice += 1;
+                }
+            }      
+    
+            pos_char(x, y, caractere2x4[indice]);
+    
+        }
+    } else {
+        for (int i = 0; i < width * heith; i++) {
         // les x,y de l’ecran
         int x = i % width;
         int y = i / width;
 
-        bool hg = at( 2 * x,  4 * y ); // pixel haut gauche
-        bool hd = at( 2 * x+1,  4 * y ); // pixel haut droit
-        bool chg = at( 2 * x,  4 * y +1); // pixel centre gauche
-        bool chd = at( 2 * x+1,  4 * y +1); // pixel centre droit
-        bool cbg = at( 2 * x,  4 * y +2); // pixel bas gauche
-        bool cbd = at( 2 * x+1,  4 * y +2); // pixel bas droit
-        bool bg = at( 2 * x,  4 * y +3); // pixel bas gauche
-        bool bd = at( 2 * x+1,  4 * y +3); // pixel bas droit
+        bool hg = at( 2 * x,  3 * y ); // pixel haut gauche
+        bool hd = at( 2 * x+1,  3 * y ); // pixel haut droit
+        bool cg = at( 2 * x,  3 * y +1); // pixel centre gauche
+        bool cd = at( 2 * x+1,  3 * y +1); // pixel centre droit
+        bool bg = at( 2 * x,  3 * y +2); // pixel bas gauche
+        bool bd = at( 2 * x+1,  3 * y +2); // pixel bas droit
 
-        bool cases[8] = {bd, bg, cbd, cbg, chd, chg, hd, hg}; // représentation binaire en bit de point faible
+        bool cases[6] = {bd, bg, cd, cg, hd, hg}; // représentation binaire en bit de point faible
 
         int indice = 0;
-        for (int j = 0; j < 8; j++)
+        for (int j = 0; j < 6; j++)
         {
             indice *= 2;
             if (cases[j]) {
@@ -640,7 +694,8 @@ void TUI_PENDULE::transfere_sub_to_screen() {
             }
         }      
 
-        pos_char(x, y, caractere[indice]);
+        pos_char(x, y, caractere2x3[indice]);
 
+        }
     }
 }

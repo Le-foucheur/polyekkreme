@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <vector>
 
 #include "maestro.h"
 
@@ -28,7 +29,7 @@ class TUI {
     void pos_str(int x, int y, std::string s);
     void pos_str(int i, std::string s);
 
-    void add_info(bool pendule, Maestro m);
+    void add_info(bool pendule, Maestro m, std::vector<int>* show_id);
     void screen_clean();
 
     int x(int i);
@@ -47,7 +48,7 @@ class TUI {
 class TUI_PENDULE : public TUI {
     public:
     TUI_PENDULE();
-    TUI_PENDULE(int w, int h, int ofset);
+    TUI_PENDULE(int w, int h, int ofset, bool res);
     ~TUI_PENDULE();
 
     // GET
@@ -70,9 +71,11 @@ class TUI_PENDULE : public TUI {
     void transfere_sub_to_screen();
     void sub_screen_clean();
 
-    private : int sub_width;
-    int sub_heith;
-    bool* sous_screen = NULL;
+    private : 
+        int sub_width;
+        int sub_heith;
+        bool resolution = false;
+        bool* sous_screen = NULL;
 };
 
 #endif
