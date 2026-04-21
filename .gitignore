@@ -41,8 +41,9 @@
 *.dwo
 
 target/*.csv
-target/plot/*.pdf
+**/target/plot/*.pdf
 
 perf.*
 
 *.csv#
+target/*.csv
