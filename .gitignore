@@ -46,3 +46,5 @@ target/plot/*.pdf
 perf.data
 perf.data.old
 perf.hist.0
+
+*.csv#

@@ -1,11 +1,11 @@
 #set page(width: auto, height: auto, margin: 1cm)
 #import "@preview/lilaq:0.6.0" as lq
 
-#let tmp = csv("../../target/data/penduleenergie.csv").len()
+#let tmp = csv("../../target/data/pendule_energie.csv").len()
 
-#if tmp > 1 {
+#if tmp > 1 and tmp < 10000 {
   let (t, Ep, Ec, Em, _) = lq.load-txt(
-    read("../../target/data/penduleenergie.csv"),
+    read("../../target/data/pendule_energie.csv"),
     delimiter: ";",
     skip-rows: 1,
     converters: x => x,

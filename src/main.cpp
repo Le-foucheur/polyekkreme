@@ -36,9 +36,9 @@ int main() {
     bool custom_pendulum = false;
     double theta0 = 0.;
 
-    std::ifstream is_file("./inputs/config.cfg");
+    std::ifstream is_file("./config/config.cfg");
     if (!is_file.good()){
-        fprintf(stderr, "impossible d’ouvrir le fichier ./inputs/config.cfg\n");
+        fprintf(stderr, "impossible d’ouvrir le fichier ./config/config.cfg\n");
         exit(1);
     }
 
@@ -153,9 +153,9 @@ int main() {
 
     // Cas de pendule custom
     } else {
-        std::ifstream pendulefile("./inputs/pendule.csv");
+        std::ifstream pendulefile("./config/pendule.csv");
         if (!pendulefile.good()){
-            fprintf(stderr, "impossible d’ouvrir le fichier ./inputs/pendule.csv\n");
+            fprintf(stderr, "impossible d’ouvrir le fichier ./config/pendule.csv\n");
             exit(1);
         }
 

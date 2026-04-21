@@ -11,11 +11,10 @@ build:
 
 run:
 	make -s build
-	echo -e "lancement du programme\n\n"
 	./${TARGET}polyekkreme
 
 plottraj:
-	typst compile --root=. ./src/ploting/plottraj.typ ./target/plot/plottraj.pdf
+	typst compile --root=. ./src/ploting/plottraj.typ ./target/plot/plot_trajectoire.pdf
 
 plotenergie:
 	typst compile --root=. ./src/ploting/plot_energie.typ ./target/plot/plot_energie.pdf
@@ -28,6 +27,6 @@ plot:
 	make -s plotenergie
 	make -s plotphase
 
-run_et_plot:
+run_plot:
 	make -s run
 	make -s plot
