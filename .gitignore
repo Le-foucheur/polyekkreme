@@ -40,10 +40,9 @@
 # debug information files
 *.dwo
 
-target/*.csv
-**/target/plot/*.pdf
+target/data/*.csv
+target/plot/*.pdf
 
 perf.*
 
 *.csv#
-target/*.csv
