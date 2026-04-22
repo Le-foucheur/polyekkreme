@@ -1,3 +1,5 @@
+Pour un VF du readme, [voir plus bas](#polyekkreme-vf)
+
 # Polyekkreme VEN
 
 Polyekkreme from εκκρεμη (ekkremé), meaning pendulum in plural, with the prefix πολυ- (poly-), meaning several.
@@ -45,10 +47,30 @@ The software produces 3 files in `.csv` format in the `target/data/` folder:
 To plot the produced data, run `make plot` or `make run_plot` if you want to run the software before plotting.
 Due to Typst limitations, plotting is limited to the first 10,000 lines for each file.
 
+## Troubleshooting
+
+### Incorrect Pendulum Display in TUI
+The pendulums may not display correctly due to the fact that installed fonts are unable to render certain characters used (Unicode block: ["Symbols for Legacy Computing Supplement"](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing_Supplement), octant block).
+
+On Linux, you can check if you have fonts capable of displaying these characters using the command:
+```
+fc-list \:charset=1CD00
+```
+
+To fix this, you can set the `resolution` parameter to `false` in the config file.
+This will switch to less precise characters for display, but ones that are more widely supported by fonts (Unicode block: ["Symbols for Legacy Computing"](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing), sextant block).
+
+If this still doesn't work, either your terminal cannot use a font that supports at least one of the two Unicode blocks,
+or you need to install a font that supports them, for example:
+
+- Catrinity: https://catrinity-font.de/characters.html
+- Cozette: https://github.com/the-moonwitch/Cozette
+- Google Noto: https://fonts.google.com/noto ([Noto Sans Symbols 2](https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2?preview.script=Latn&query=Symbols) with `resolution` set to `false`)
+
 # Polyekkreme VF
 
 **Polyekkreme** vient de εκκρεμη (ekkremé), « pendule » au pluriel, avec le préfixe πολυ- (poly-), signifiant « plusieurs ».
-Il s’agit d’un petit logiciel de simulation de pendules multiples via RK4 (Runge-Kutta 4).
+Il s’agit d’un petit logiciel de simulation de pendules multiples via RK4 (Runge-Kutta 4), avec un rendue en TUI.
 
 **N.B. :** Ce projet est un projet réalisé dans le cadre de mes études ; n’y attendez pas une « bonne » simulation.
 
@@ -90,3 +112,23 @@ Le logiciel produit 3 fichiers au format `.csv` dans le dossier `target/data/` :
 
 Pour tracer les données produites, utilisez `make plot` ou `make run_plot` si vous souhaitez lancer le logiciel avant de tracer les graphiques.
 En raison des limitations de Typst, le tracé est limité aux 10 000 premières lignes pour chaque fichier.
+
+## Troubleshooting
+
+### Mauvais affichage des pendules dans le TUI
+Il se peut que les pendules ne s’affiche pas correctement, c’est du au faits que les polices installées sont incapable de rendre certains caractères utilisés ( block unicode : [« Symbols for Legacy Computing Supplement »](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing_Supplement), block octant ).
+
+Sur linux vous pouvez vérifier si vous avez des polices capable d’y afficher via la commande :
+```
+fc-list :charset=1CD00
+```
+
+Pour régler celà, vous pouvez passer mettre à `false` le paramètre `resolution` dans le fichier de config\
+Celà auras pour effet de passer sur des caratère moins précis pour l’affichage mais plus supporté par les polices d’écriture ( block unicode : [« Symbols for Legacy Computing »](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing), block sextant ).
+
+Si celà ne marche toujours pas c’est que, soit votre terminal ne peut utilisé de telle police qui support au moins un des deux block unicode.
+Soit il vous faut installer une police qui les support, par exemple :
+
+ - Catrinity : https://catrinity-font.de/characters.html
+ - Cozette : https://github.com/the-moonwitch/Cozette
+ - Google Noto : https://fonts.google.com/noto ([Noto Sans Symbols 2](https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2?preview.script=Latn&query=Symbols) avec la résolution à `false`)
