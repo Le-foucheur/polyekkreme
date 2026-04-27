@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <cmath>
+#include <string>
 #include "tui.h"
 #include "maestro.h"
 
@@ -15,24 +16,20 @@ TUI::TUI() {
 
     this->width = w.ws_col;
     this->heith = w.ws_row;
-    this->wall = false;
-    this->offset = 0;
-    this->screen = (std::string*)malloc(sizeof(std::string) * width * heith);
+    this->screen = new std::string[width * heith];
     for (int i = 0; i < width * heith; i++){
         pos_char(i, " ");
     }
 }
 
 TUI::~TUI() {
-    //free(screen);
+    delete[] screen;
 }
 
 TUI::TUI(int w, int h) {
     this->width = w;
     this->heith = h;
-    this->wall = false;
-    this->offset = 0;
-    this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+    this->screen = new std::string[width * heith];
     for (int i = 0; i < width * heith; i++)
     {
         pos_char(i, " ");
@@ -42,9 +39,8 @@ TUI::TUI(int w, int h) {
 TUI::TUI(int w, int h, int ofset) {
     this->width = w;
     this->heith = h;
-    this->wall = false;
     this->offset = ofset;
-    this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+    this->screen = new std::string[width * heith];
     for (int i = 0; i < width * heith; i++)
     {
         pos_char(i, " ");
@@ -55,8 +51,7 @@ TUI::TUI(int w, int h, bool mur) {
     this->width = w;
     this->heith = h;
     this->wall = mur;
-    this->offset = 0;
-    this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+    this->screen = new std::string[width * heith];
     for (int i = 0; i < width * heith; i++)
     {
         pos_char(i, " ");
@@ -154,7 +149,7 @@ bool mem(std::vector<int>* vec, int ele){
     return false;
 }
 
-void TUI::add_info(bool pendule, Maestro m, std::vector<int>* id_show) {
+void TUI::add_info(bool pendule, Maestro& m, std::vector<int>* id_show) {
     Pendule** list = m.get_pendule();
 
     std::string s = "pas: " + std::to_string(m.dt());
@@ -205,15 +200,7 @@ void TUI::screen_clean() {
 
 /*###########################################################################TUI PENDULE###########################################################################*/
 
-TUI_PENDULE::TUI_PENDULE() {
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-    this->width = w.ws_col;
-    this->heith = w.ws_row;
-    this->wall = false;
-    this->offset = 0;
-    this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+TUI_PENDULE::TUI_PENDULE(): TUI() {
 
     this->sub_width = 2 * width;
     this->sub_heith = 4 * heith;
@@ -228,13 +215,7 @@ TUI_PENDULE::TUI_PENDULE() {
     }
 }
 
-TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset, bool res) {
-
-    this->width = w;
-    this->heith = h;
-    this->wall = false;
-    this->offset = ofset;
-    this->screen = (std::string *)malloc(sizeof(std::string) * width * heith);
+TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset, bool res): TUI(w, h, ofset) {
     this->resolution = res;
 
     this->sub_width = 2 * width;
@@ -255,8 +236,9 @@ TUI_PENDULE::TUI_PENDULE(int w, int h, int ofset, bool res) {
 }
 
 TUI_PENDULE::~TUI_PENDULE() {
-    free(screen);
-    free(sous_screen);
+    if (sous_screen != NULL){
+        free(sous_screen);
+    }
 }
 
 /*      GET     */
@@ -270,7 +252,7 @@ bool TUI_PENDULE::at(int x, int y) {
 
 void TUI_PENDULE::pos_px(int i, bool px)
 {
-    if(i > sub_heith * sub_width || i < 0) {
+    if(i >= sub_heith * sub_width || i < 0) {
         return;
     }
     sous_screen[i] = px;
@@ -597,19 +579,19 @@ void TUI_PENDULE::ligne(int x1, int y1, int x2, int y2)
     // le pixel final (x2, y2) n’est pas tracé.
 }
 
-int TUI_PENDULE::convertx(double x, Maestro m) {
+int TUI_PENDULE::convertx(double x, Maestro& m) {
     double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
     double coef = sub_width / (tmplen);
     return int(round(coef * x + sub_width / 2));
 }
 
-int TUI_PENDULE::converty(double y, Maestro m) {
+int TUI_PENDULE::converty(double y, Maestro& m) {
     double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
     double coef = - sub_heith /(tmplen); 
     return int(round(coef * y + sub_heith / 3));
 }
 
-void TUI_PENDULE::draw_pendule(Maestro m) {
+void TUI_PENDULE::draw_pendule(Maestro& m) {
     Pendule** list = m.get_pendule();
 
     for (int i = 0; i < m.nb_p(); i++) {

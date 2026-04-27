@@ -1,7 +1,5 @@
-#include <stdlib.h>
 #include <cmath>
 #include <stdio.h>
-#include <tgmath.h>
 #include "pendule.h"
 
 /*  Les constructeur et desctruceur    */
@@ -31,7 +29,6 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0){
     this->th = theta0;
     this->oldvit = omega0;
     this->vit_angl = omega0;
-    this->attache = NULL;
 }
 
 /*      Gets    */

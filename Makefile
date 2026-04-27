@@ -1,15 +1,20 @@
 CXX = g++
 
-FLAGS = -Wall -Wextra -pedantic-errors -Wcast-align -Wuseless-cast -Wconversion -Wduplicated-cond -Wduplicated-branches -Wformat=2 -Wshadow -Wnon-virtual-dtor
-
+FLAGS = -Wall -Wextra -pedantic-errors -Wcast-align -Wuseless-cast -Wconversion -Wduplicated-cond -Wduplicated-branches -Wformat=2 -Wshadow -Wnon-virtual-dtor -fsanitize=address,undefined
 INCLUDE = includes/
 SRC = src/
 TARGET = target/
 
 build:
-	mkdir target/data
-	mkdir target/plot
-	${CXX} -O3 -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}polyekkreme
+	@if [ ! -d ./target/plot/ ]; then\
+		mkdir ./target/plot;\
+	fi
+	
+	@if [ ! -d ./target/data/ ]; then\
+		mkdir ./target/data;\
+	fi
+	
+	${CXX} -I ${INCLUDE} ${FLAGS} ${SRC}main.cpp ${SRC}pendule.cpp $(SRC)maestro.cpp $(SRC)tui.cpp -o ${TARGET}polyekkreme
 
 run:
 	make -s build
@@ -32,3 +37,7 @@ plot:
 run_plot:
 	make -s run
 	make -s plot
+
+clean:
+	rm -rf ./target/
+	mkdir target

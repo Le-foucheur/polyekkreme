@@ -9,13 +9,14 @@ Maestro::Maestro() {
 }
 
 Maestro::~Maestro() {
-    //free(list_pendule);
+    for (int i = 0; i < nb_pendule; i++){
+        delete list_pendule[i];
+    }
+    free(list_pendule);
 }
 
 Maestro::Maestro(int nbmax, double dt, double tmax, double gravity) {
     this->nb_max_pendule = nbmax;
-    this->nb_pendule = 0;
-    this->temps = 0;
     this->pas = dt;
     this->tempsmax = tmax;
     this->grav = gravity;
@@ -119,7 +120,8 @@ double double_pendule_g(double x, double y, double u, double v, double l1, doubl
     return (-v * v * m2 * l2 * cos(Dtetha) * sin(Dtetha) + (m1 + m2) * (g * sin(x) * cos(Dtetha) - l1 * u * u * sin(Dtetha) - g * sin(y))) / ((m1 + m2) * l2 - m2 * l2 * cos(Dtetha) * cos(Dtetha));
 }
 
-double n_pendule(int i, double* x, double* v, double* l, double g, Maestro m) {
+//Tentative echoue
+double n_pendule(int i, double* x, double* v, double* l, double g, Maestro& m) {
     double tmp1 = 0;
     double tmp2 = 0;
     for (int j = 0; j < i; j++){

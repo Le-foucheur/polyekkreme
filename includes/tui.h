@@ -1,8 +1,6 @@
 #ifndef TUIH
 #define TUIH
 
-#include <stdlib.h>
-#include <string>
 #include <vector>
 
 #include "maestro.h"
@@ -29,7 +27,7 @@ class TUI {
     void pos_str(int x, int y, std::string s);
     void pos_str(int i, std::string s);
 
-    void add_info(bool pendule, Maestro m, std::vector<int>* show_id);
+    void add_info(bool pendule, Maestro& m, std::vector<int>* show_id);
     void screen_clean();
 
     int x(int i);
@@ -38,9 +36,9 @@ class TUI {
     void print_screen();
 
     protected:
-        bool wall;
-        int width;
-        int heith;
+        bool wall = false;
+        int width = 0;
+        int heith = 0;
         int offset = 0;
         std::string* screen = NULL;
 };
@@ -60,20 +58,20 @@ class TUI_PENDULE : public TUI {
     void pos_px(int x, int y, bool px);
     void pos_px(int i, bool px);
 
-    int convertx(double x, Maestro m);
-    int converty(double y, Maestro m);
+    int convertx(double x, Maestro& m);
+    int converty(double y, Maestro& m);
 
     void circle(int x, int y);
     void petit_circle(int x, int y);
     void ligne(int x1, int y1, int x2, int y2);
-    void draw_pendule(Maestro m);
+    void draw_pendule(Maestro& m);
 
     void transfere_sub_to_screen();
     void sub_screen_clean();
 
     private : 
-        int sub_width;
-        int sub_heith;
+        int sub_width = 0;
+        int sub_heith = 0;
         bool resolution = false;
         bool* sous_screen = NULL;
 };

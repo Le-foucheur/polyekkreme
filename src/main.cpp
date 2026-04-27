@@ -13,10 +13,11 @@
 #include "maestro.h"
 #include "tui.h"
 
+volatile __sig_atomic_t end_flag = 0;
+
 void my_handler(int s)
 {
-    printf("\x1b[?1049l\x1b[?25h\x1b[?47l");
-    exit(s);
+    end_flag = s;
 }
 
 int main() {
@@ -148,7 +149,7 @@ int main() {
             Pendule* nouveau = new Pendule(i, 1, 1, theta0, 0, parent);
             
             maitre.add_pendule(nouveau);
-            
+
         }
 
     // Cas de pendule custom
@@ -210,6 +211,8 @@ int main() {
                     Pendule* nouveau = new Pendule(id, masse, longueur, theta, omega, parent);
 
                     maitre.add_pendule(nouveau);
+
+    
                 }
             }
         }
@@ -277,7 +280,7 @@ int main() {
     }
 
     printf("\x1b[?47h\x1b[?1049h\x1b[?25l");
-    while (maitre.t() < maitre.tmax() || maitre.tmax() < 0) {
+    while ((maitre.t() < maitre.tmax() || maitre.tmax() < 0) && end_flag == 0) {
         clock_t t = clock();
         
 

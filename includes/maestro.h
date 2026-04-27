@@ -34,15 +34,15 @@ class Maestro {
         void save();
 
     private:
-        int nb_pendule;
-        int nb_max_pendule;
-        double temps;
+        int nb_pendule = 0;
+        int nb_max_pendule = 0;
+        double temps = 0;
         double grav = 9.81;
-        double pas;
-        double tempsmax;
+        double pas = 0.01;
+        double tempsmax = -1;
         double lmax = 0;
         double ltot = 0;
-        Pendule** list_pendule;
+        Pendule** list_pendule = NULL;
 };
 
 template <typename T>

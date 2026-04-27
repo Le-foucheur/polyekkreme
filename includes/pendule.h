@@ -34,13 +34,13 @@ public:
 
 private:
 
-    int identifieur;
-    double th;
-    double longeur;
-    double vit_angl;
-    double oldvit;
-    double masse;
-    Pendule* attache;
+    int identifieur = 0.;
+    double th = 0.;
+    double longeur = 0.;
+    double vit_angl = 0.;
+    double oldvit = 0.;
+    double masse = 0.;
+    Pendule* attache = NULL;
 };
 
 
