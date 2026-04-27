@@ -31,6 +31,7 @@ int main() {
     double tmax = -1;
     double pas = 0.01;
     double grav = 9.81;
+    double gamma = 0;
     int nb_pendule_max = 0;
     bool pendule_info = true;
     std::string id_print = "none";
@@ -69,6 +70,10 @@ int main() {
                         } else if (key == "gravity " || key == "gravity") {
 
                             grav = std::stod(value);
+
+                        } else if (key == "gamma " || key == "gamma") {
+
+                            gamma = std::stod(value);
 
                         } else if (key == "nb_pendulums " || key == "nb_pendulums") {
                             
@@ -129,7 +134,7 @@ int main() {
 
 
     // init maestro
-    Maestro maitre = Maestro(nb_pendule_max, pas, tmax, grav);
+    Maestro maitre = Maestro(nb_pendule_max, pas, tmax, grav, gamma);
 
 
     /*

@@ -1,6 +1,6 @@
 CXX = g++
 
-FLAGS = -Wall -Wextra -pedantic-errors -Wcast-align -Wuseless-cast -Wconversion -Wduplicated-cond -Wduplicated-branches -Wformat=2 -Wshadow -Wnon-virtual-dtor -fsanitize=address,undefined
+FLAGS = -O3 -Wall -Wextra -pedantic-errors -Wcast-align -Wuseless-cast -Wconversion -Wduplicated-cond -Wduplicated-branches -Wformat=2 -Wshadow -Wnon-virtual-dtor -fsanitize=address,undefined
 INCLUDE = includes/
 SRC = src/
 TARGET = target/

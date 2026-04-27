@@ -15,10 +15,11 @@ Maestro::~Maestro() {
     free(list_pendule);
 }
 
-Maestro::Maestro(int nbmax, double dt, double tmax, double gravity) {
+Maestro::Maestro(int nbmax, double dt, double tmax, double gravity, double frotement) {
     this->nb_max_pendule = nbmax;
     this->pas = dt;
     this->tempsmax = tmax;
+    this->gamma = frotement;
     this->grav = gravity;
     this->list_pendule = (Pendule**)malloc(sizeof(Pendule*) * nbmax);
     
@@ -143,7 +144,7 @@ double n_pendule(int i, double* x, double* v, double* l, double g, Maestro& m) {
 }
 
 // Fonction qui calcule toutes les accélérations d'un seul coup via le formalisme matriciel Gémini
-void calculer_accelerations_npendule(int n, double* x, double* v, double* l, double* m, double g, double* acc_out) {
+void calculer_accelerations_npendule(int n, double* x, double* v, double* l, double* m, double g, double gamma, double* acc_out) {
     // 1. Calcul des masses cumulées (mu)
     double* mu = (double*)malloc(n * sizeof(double));
     mu[n - 1] = m[n - 1];
@@ -158,7 +159,7 @@ void calculer_accelerations_npendule(int n, double* x, double* v, double* l, dou
     
     // 3. Remplissage du système (A * acc = B)
     for (int i = 0; i < n; i++) {
-        B[i] = -mu[i] * g * l[i] * sin(x[i]); // Gravité
+        B[i] = -mu[i] * g * l[i] * sin(x[i]) - gamma * v[i]; // Gravité
         
         for (int j = 0; j < n; j++) {
             int max_ij = (i > j) ? i : j;
@@ -400,7 +401,7 @@ void Maestro::calcule_temp_plus_1() {
         double* acc_tmp = (double*)malloc(sizeof(double) * nb_pendule);
         
         //calc k1
-        calculer_accelerations_npendule(nb_pendule, x, v, l, m, grav, acc_tmp);
+        calculer_accelerations_npendule(nb_pendule, x, v, l, m, grav, gamma, acc_tmp);
         for (int i = 0; i < nb_pendule; i++) {
             kx1[i] = pas * v[i];
             kv1[i] = pas * acc_tmp[i];
@@ -413,7 +414,7 @@ void Maestro::calcule_temp_plus_1() {
             tmpx[i] = x[i] + kx1[i] / 2.;
             tmpv[i] = v[i] + kv1[i] / 2.;
         }
-        calculer_accelerations_npendule(nb_pendule, tmpx, tmpv, l, m, grav, acc_tmp);
+        calculer_accelerations_npendule(nb_pendule, tmpx, tmpv, l, m, grav, gamma, acc_tmp);
         for (int i = 0; i < nb_pendule; i++){
             kx2[i] = pas * tmpv[i];
             kv2[i] = pas * acc_tmp[i];
@@ -426,7 +427,7 @@ void Maestro::calcule_temp_plus_1() {
             tmp1x[i] = x[i] + kx2[i] / 2.;
             tmp1v[i] = v[i] + kv2[i] / 2.;
         }
-        calculer_accelerations_npendule(nb_pendule, tmp1x, tmp1v, l, m, grav, acc_tmp);
+        calculer_accelerations_npendule(nb_pendule, tmp1x, tmp1v, l, m, grav, gamma, acc_tmp);
         for (int i = 0; i < nb_pendule; i++){
             kx3[i] = pas * tmp1v[i];
             kv3[i] = pas * acc_tmp[i];
@@ -439,7 +440,7 @@ void Maestro::calcule_temp_plus_1() {
             tmp2x[i] = x[i] + kx3[i];
             tmp2v[i] = v[i] + kv3[i];
         }
-        calculer_accelerations_npendule(nb_pendule, tmp2x, tmp2v, l, m, grav, acc_tmp);
+        calculer_accelerations_npendule(nb_pendule, tmp2x, tmp2v, l, m, grav, gamma, acc_tmp);
         for (int i = 0; i < nb_pendule; i++){
             kx4[i] = pas * tmp2v[i];
             kv4[i] = pas * acc_tmp[i];

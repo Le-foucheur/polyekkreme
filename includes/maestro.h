@@ -6,7 +6,7 @@
 class Maestro {
     public:
         Maestro();
-        Maestro(int nbmax, double dt, double tmax, double gravity);
+        Maestro(int nbmax, double dt, double tmax, double gravity, double frotement);
         ~Maestro();
 
         //Get
@@ -36,6 +36,7 @@ class Maestro {
     private:
         int nb_pendule = 0;
         int nb_max_pendule = 0;
+        double gamma = 0;
         double temps = 0;
         double grav = 9.81;
         double pas = 0.01;
