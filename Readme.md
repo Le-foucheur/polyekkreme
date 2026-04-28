@@ -111,7 +111,7 @@ Le logiciel produit 3 fichiers au format `.csv` dans le dossier `target/data/` :
 **Attention :** Pour tracer les données, vous avez besoin du compilateur [Typst](https://typst.app/) (GitHub : https://github.com/typst/typst).
 
 Pour tracer les données produites, utilisez `make plot` ou `make run_plot` si vous souhaitez lancer le logiciel avant de tracer les graphiques.
-En raison des limitations de Typst, le tracé est limité aux 10 000 premières lignes pour chaque fichier.
+En raison des limitations de Typst, le tracé est limité aux cas où les `.csv` font au plus 10 000 lignes pour chaque fichier.
 
 ## Troubleshooting
 
@@ -131,4 +131,4 @@ Soit il vous faut installer une police qui les support, par exemple :
 
  - Catrinity : https://catrinity-font.de/characters.html
  - Cozette : https://github.com/the-moonwitch/Cozette
- - Google Noto : https://fonts.google.com/noto ([Noto Sans Symbols 2](https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2?preview.script=Latn&query=Symbols) avec la résolution à `false`)
+ - Google Noto : https://fonts.google.com/noto ([Noto Sans Symbols 2](https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2?preview.script=Latn&query=Symbols) avec `resolution` mis à `false`)
