@@ -158,21 +158,29 @@ void TUI::add_info(bool pendule, Maestro& m, std::vector<int>* id_show) {
     } else {
         s += "\ntemps: " + std::to_string(m.t()) ;
     }
-    s += "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax());
-    if (m.nb_p() == 2 ){
+    s += "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax()) + "\ngravity : " + std::to_string(m.g()) + "\nfriction coefficient : " + std::to_string(m.gam());
 
-        double m1 = list[0]->m();
-        double l1 = list[0]->r();
-        double o1 = list[0]->omega();
-        double m2 = list[1]->m();
-        double l2 = list[1]->r();
-        double o2 = list[1]->omega();
-        double D = list[0]->theta() - list[1]->theta();
+    long double Ec = 0, Ep = 0;
+    long double x_curr = 0, y_curr = 0;
+    long double vx_curr = 0, vy_curr = 0;
 
-        double Ec = 1. / 2. * m1 * l1 * l1 * o1 * o1 + 1./2. * m2 * (l1 * l1 * o1 * o1 + l2 * l2 * o2 * o2 + 2 * l1 * l2 * o1 * o2 * cos(D));
-        double Ep = 9.81 * (m1 * list[0]->y() + m2 * list[1]->y());
-        s += "\n\nEp = " + std::to_string(Ep) + "\nEc = " + std::to_string(Ec) + "\nEm = " + std::to_string(Ec + Ep);
+    for (int i = 0; i < m.nb_p(); i++) {
+        long double th = m.get_pendule()[i]->theta();
+        long double om = m.get_pendule()[i]->omega();
+        long double l  = m.get_pendule()[i]->r();
+        long double mass = m.get_pendule()[i]->m();
+
+        x_curr += l * sinl(th);
+        y_curr -= l * cosl(th);
+        vx_curr += l * om * cosl(th);
+        vy_curr += l * om * sinl(th);
+
+        Ep += mass * m.g() * y_curr;
+        Ec += 0.5 * mass * (vx_curr * vx_curr + vy_curr * vy_curr);
     }
+
+    s += "\n\nEp = " + std::to_string(Ep) + "\nEc = " + std::to_string(Ec) + "\nEm = " + std::to_string(Ec + Ep);
+        
     if (pendule) {
         for (int i = 0; i < m.nb_p(); i++)
         {
@@ -579,16 +587,16 @@ void TUI_PENDULE::ligne(int x1, int y1, int x2, int y2)
     // le pixel final (x2, y2) n’est pas tracé.
 }
 
-int TUI_PENDULE::convertx(double x, Maestro& m) {
-    double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
-    double coef = sub_width / (tmplen);
-    return int(round(coef * x + sub_width / 2));
+int TUI_PENDULE::convertx(long double x, Maestro& m) {
+    long double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
+    long double coef = sub_width / (tmplen);
+    return int(roundl(coef * x + sub_width / 2));
 }
 
-int TUI_PENDULE::converty(double y, Maestro& m) {
-    double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
-    double coef = - sub_heith /(tmplen); 
-    return int(round(coef * y + sub_heith / 3));
+int TUI_PENDULE::converty(long double y, Maestro& m) {
+    long double tmplen = 2. * m.l_totale() + m.l_max() + 0.5;
+    long double coef = - sub_heith /(tmplen); 
+    return int(roundl(coef * y + sub_heith / 3));
 }
 
 void TUI_PENDULE::draw_pendule(Maestro& m) {

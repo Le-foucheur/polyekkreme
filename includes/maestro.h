@@ -6,23 +6,25 @@
 class Maestro {
     public:
         Maestro();
-        Maestro(int nbmax, double dt, double tmax, double gravity, double frotement);
+        Maestro(int nbmax, long double dt, long double tmax, double gravity, double frotement);
         ~Maestro();
 
         //Get
         Pendule** get_pendule();
-        double dt();
-        double tmax();
-        double t();
-        double l_totale();
-        double l_max();
+        long double dt();
+        long double tmax();
+        long double t();
+        long double l_totale();
+        long double l_max();
+        double g();
+        double gam();
         int nb_p();
         int nb_pmax();
 
         //Set
         void add_pendule(Pendule* pendule);
-        void dt(double dt);
-        void tmax(double tmax);
+        void dt(long double dt);
+        void tmax(long double tmax);
 
         void print(bool pendule);
         void print();
@@ -37,12 +39,12 @@ class Maestro {
         int nb_pendule = 0;
         int nb_max_pendule = 0;
         double gamma = 0;
-        double temps = 0;
         double grav = 9.81;
-        double pas = 0.01;
-        double tempsmax = -1;
-        double lmax = 0;
-        double ltot = 0;
+        long double temps = 0;
+        long double pas = 0.01;
+        long double tempsmax = -1;
+        long double lmax = 0;
+        long double ltot = 0;
         Pendule** list_pendule = NULL;
 };
 

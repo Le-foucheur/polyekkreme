@@ -58,8 +58,8 @@ class TUI_PENDULE : public TUI {
     void pos_px(int x, int y, bool px);
     void pos_px(int i, bool px);
 
-    int convertx(double x, Maestro& m);
-    int converty(double y, Maestro& m);
+    int convertx(long double x, Maestro& m);
+    int converty(long double y, Maestro& m);
 
     void circle(int x, int y);
     void petit_circle(int x, int y);

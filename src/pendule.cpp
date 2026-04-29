@@ -12,7 +12,7 @@ Pendule::~Pendule(){
 
 }
 
-Pendule::Pendule(int id, double m, double r, double theta0, double omega0, Pendule *parent){
+Pendule::Pendule(int id, long double m, long double r, long double theta0, long double omega0, Pendule *parent){
     this->identifieur = id;
     this->masse = m;
     this->longeur = r;
@@ -22,7 +22,7 @@ Pendule::Pendule(int id, double m, double r, double theta0, double omega0, Pendu
     this->attache = parent;
 }
 
-Pendule::Pendule(int id, double m, double r, double theta0, double omega0){
+Pendule::Pendule(int id, long double m, long double r, long double theta0, long double omega0){
     this->identifieur = id;
     this->masse = m;
     this->longeur = r;
@@ -37,24 +37,24 @@ int Pendule::id() {
     return identifieur;
 }
 
-double Pendule::r() {
+long double Pendule::r() {
     return longeur;
 }
 
-double Pendule::theta() {
+long double Pendule::theta() {
     return th;
 }
 
-double Pendule::oldomega() {
+long double Pendule::oldomega() {
     return oldvit;
 }
 
-double Pendule::omega() {
+long double Pendule::omega() {
     return vit_angl;
 } 
 
-double Pendule::x() {
-    double tmp = longeur * sin(th);
+long double Pendule::x() {
+    long double tmp = longeur * sinl(th);
     if (attache == NULL) {
         return tmp;
     }
@@ -63,8 +63,8 @@ double Pendule::x() {
     }
 }
 
-double Pendule::y() {
-    double tmp = - longeur * cos(th);
+long double Pendule::y() {
+    long double tmp = - longeur * cosl(th);
     if (attache == NULL) {
         return tmp;
     }
@@ -73,7 +73,7 @@ double Pendule::y() {
     }
 }
 
-double Pendule::m() {
+long double Pendule::m() {
     return masse;
 }
 
@@ -87,23 +87,23 @@ void Pendule::id(int id) {
     this->identifieur = id;
 }
 
-void Pendule::r(double r) {
+void Pendule::r(long double r) {
     this->longeur = r;
 }
 
-void Pendule::theta(double theta) {
+void Pendule::theta(long double theta) {
     this->th = std::remainder(theta, 2 * M_PI);
 }
 
-void Pendule::oldomega(double omega) {
+void Pendule::oldomega(long double omega) {
     this->oldvit = omega;
 }
 
-void Pendule::omega(double omega) {
+void Pendule::omega(long double omega) {
     this->vit_angl = omega;
 }
 
-void Pendule::m(double m) {
+void Pendule::m(long double m) {
     this->masse = m;
 }
 
@@ -115,11 +115,11 @@ void Pendule::attacher(Pendule* parent) {
 
 void Pendule::print(){
     printf("id: %d\n", identifieur);
-    printf("\tmasse: %0.3g\n", masse);
-    printf("\tcoord cart: %0.3g, %0.3g\n", x(), y());
-    printf("\tcoord pol: %0.3g, %0.3g\n", longeur, th - M_PI_2);
-    printf("\tcoord nat: %0.3g, %0.3g\n", longeur, th);
-    printf("\tvitesse angulaire: %0.3g\n", vit_angl);
+    printf("\tmasse: %0.3Lg\n", masse);
+    printf("\tcoord cart: %0.3Lg, %0.3Lg\n", x(), y());
+    printf("\tcoord pol: %0.3Lg, %0.3Lg\n", longeur, th - M_PI_2);
+    printf("\tcoord nat: %0.3Lg, %0.3Lg\n", longeur, th);
+    printf("\tvitesse angulaire: %0.3Lg\n", vit_angl);
     if (attache != NULL){
         printf("\tid attache: %d\n", attache->id());
     } else {
