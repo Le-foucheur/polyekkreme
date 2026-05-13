@@ -38,6 +38,20 @@ run_plot:
 	make -s run
 	make -s plot
 
+watchtraj:
+	typst watch --root=. ./src/ploting/plottraj.typ ./target/plot/plot_trajectoire.pdf
+
+watchenergie:
+	typst watch --root=. ./src/ploting/plot_energie.typ ./target/plot/plot_energie.pdf
+
+watchphase:
+	typst watch --root=. ./src/ploting/plot_portrait_phase.typ ./target/plot/plot_portrait_phase.pdf
+
+watch:
+	make -s watchtraj
+	make -s watchenergie
+	make -s watchphase
+
 clean:
 	rm -rf ./target/
 	mkdir target

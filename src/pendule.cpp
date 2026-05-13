@@ -92,7 +92,7 @@ void Pendule::r(double r) {
 }
 
 void Pendule::theta(double theta) {
-    this->th = std::remainder(theta, 2 * M_PI);
+    this->th = theta;
 }
 
 void Pendule::oldomega(double omega) {

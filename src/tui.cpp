@@ -161,7 +161,7 @@ void TUI::add_info(bool pendule, Maestro& m, std::vector<int>* id_show) {
     s += "\nnb pendule / nb max: " + std::to_string(m.nb_p()) + " / " + std::to_string(m.nb_pmax()) + "\ngravity : " + std::to_string(m.g()) + "\nfriction coefficient : " + std::to_string(m.gam());
 
     double Ec = 0, Ep = 0;
-    double x_curr = 0, y_curr = 0;
+    double y_curr = 0;
     double vx_curr = 0, vy_curr = 0;
 
     for (int i = 0; i < m.nb_p(); i++) {
@@ -170,7 +170,6 @@ void TUI::add_info(bool pendule, Maestro& m, std::vector<int>* id_show) {
         double l  = m.get_pendule()[i]->r();
         double mass = m.get_pendule()[i]->m();
 
-        x_curr += l * sin(th);
         y_curr -= l * cos(th);
         vx_curr += l * om * cos(th);
         vy_curr += l * om * sin(th);
@@ -319,6 +318,8 @@ void TUI_PENDULE::petit_circle(int x, int y){
 //
 //}
 
+
+//repris de wikipediat
 void TUI_PENDULE::ligne(int x1, int y1, int x2, int y2)
 {
     int dx = x2 - x1;
@@ -607,7 +608,9 @@ void TUI_PENDULE::draw_pendule(Maestro& m) {
         int x = convertx(pend->x(), m);
         int y = converty(pend->y(), m);
         
-        circle(x,y);
+        if (m.nb_p() < 20){
+            circle(x,y);
+        }
         
         Pendule *parent = pend->attacher();
         if (parent != NULL)

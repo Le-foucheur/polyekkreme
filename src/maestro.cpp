@@ -45,7 +45,7 @@ double Maestro::g() {
 }
 
 double Maestro::gam() {
-    return grav;
+    return gamma;
 }
 
 double Maestro::dt() {
@@ -215,41 +215,41 @@ void calculer_accelerations_npendule(int n, double* x, double* v, double* l, dou
 
 //calcule une ittération
 void Maestro::calcule_temp_plus_1() {
-    if (nb_pendule == 2) {
-        //les grandeurs utiles
-        double x = list_pendule[0]->theta();
-        double y = list_pendule[1]->theta();
-        double u = list_pendule[0]->omega();
-        double v = list_pendule[1]->omega();
-        double m1 = list_pendule[0]->m();
-        double m2 = list_pendule[1]->m();
-        double l1 = list_pendule[0]->r();
-        double l2 = list_pendule[1]->r();
-
-        double kx1 = u * pas;
-        double ky1 = v * pas;
-        double ku1 = pas * double_pendule_f( x, y, u, v, l1, l2, m1, m2, grav);
-        double kv1 = pas * double_pendule_g( x, y, u, v, l1, l2, m1, m2, grav);
-
-        double kx2 = (u + 1./2. * ku1) * pas;
-        double ky2 = (v + 1./2. * kv1) * pas;
-        double ku2 = pas * double_pendule_f(x + kx1 /2., y + ky1/2., u + ku1/2., v + kv1 / 2., l1, l2, m1, m2, grav);
-        double kv2 = pas * double_pendule_g(x + kx1 /2., y + ky1/2., u + ku1/2., v + kv1 / 2., l1, l2, m1, m2, grav);
-
-        double kx3 = (u + 1./2. * ku2) * pas;
-        double ky3 = (v + 1./2. * kv2) * pas;
-        double ku3 = pas * double_pendule_f(x + kx2 /2., y + ky2/2., u + ku2/2., v + kv2 / 2., l1, l2, m1, m2, grav);
-        double kv3 = pas * double_pendule_g(x + kx2 /2., y + ky2/2., u + ku2/2., v + kv2 / 2., l1, l2, m1, m2, grav);
-
-        double kx4 = (u + ku3) * pas;
-        double ky4 = (v + kv3) * pas;
-        double ku4 = pas * double_pendule_f(x + kx3 , y + ky3, u + ku3, v + kv3, l1, l2, m1, m2, grav);
-        double kv4 = pas * double_pendule_g(x + kx3 , y + ky3, u + ku3, v + kv3, l1, l2, m1, m2, grav);
-
-        this->list_pendule[0]->theta(x + 1./6. * (kx1 + 2 * kx2 + 2 * kx3 + kx4));
-        this->list_pendule[1]->theta(y + 1./6. * (ky1 + 2 * ky2 + 2 * ky3 + ky4));
-        this->list_pendule[0]->omega(u + 1./6. * (ku1 + 2 * ku2 + 2 * ku3 + ku4));
-        this->list_pendule[1]->omega(v + 1./6. * (kv1 + 2 * kv2 + 2 * kv3 + kv4));
+//    if (nb_pendule == 2) {
+//        //les grandeurs utiles
+//        double x = list_pendule[0]->theta();
+//        double y = list_pendule[1]->theta();
+//        double u = list_pendule[0]->omega();
+//        double v = list_pendule[1]->omega();
+//        double m1 = list_pendule[0]->m();
+//        double m2 = list_pendule[1]->m();
+//        double l1 = list_pendule[0]->r();
+//        double l2 = list_pendule[1]->r();
+//
+//        double kx1 = u * pas;
+//        double ky1 = v * pas;
+//        double ku1 = pas * double_pendule_f( x, y, u, v, l1, l2, m1, m2, grav);
+//        double kv1 = pas * double_pendule_g( x, y, u, v, l1, l2, m1, m2, grav);
+//
+//        double kx2 = (u + 1./2. * ku1) * pas;
+//        double ky2 = (v + 1./2. * kv1) * pas;
+//        double ku2 = pas * double_pendule_f(x + kx1 /2., y + ky1/2., u + ku1/2., v + kv1 / 2., l1, l2, m1, m2, grav);
+//        double kv2 = pas * double_pendule_g(x + kx1 /2., y + ky1/2., u + ku1/2., v + kv1 / 2., l1, l2, m1, m2, grav);
+//
+//        double kx3 = (u + 1./2. * ku2) * pas;
+//        double ky3 = (v + 1./2. * kv2) * pas;
+//        double ku3 = pas * double_pendule_f(x + kx2 /2., y + ky2/2., u + ku2/2., v + kv2 / 2., l1, l2, m1, m2, grav);
+//        double kv3 = pas * double_pendule_g(x + kx2 /2., y + ky2/2., u + ku2/2., v + kv2 / 2., l1, l2, m1, m2, grav);
+//
+//        double kx4 = (u + ku3) * pas;
+//        double ky4 = (v + kv3) * pas;
+//        double ku4 = pas * double_pendule_f(x + kx3 , y + ky3, u + ku3, v + kv3, l1, l2, m1, m2, grav);
+//        double kv4 = pas * double_pendule_g(x + kx3 , y + ky3, u + ku3, v + kv3, l1, l2, m1, m2, grav);
+//
+//        this->list_pendule[0]->theta(x + 1./6. * (kx1 + 2 * kx2 + 2 * kx3 + kx4));
+//        this->list_pendule[1]->theta(y + 1./6. * (ky1 + 2 * ky2 + 2 * ky3 + ky4));
+//        this->list_pendule[0]->omega(u + 1./6. * (ku1 + 2 * ku2 + 2 * ku3 + ku4));
+//        this->list_pendule[1]->omega(v + 1./6. * (kv1 + 2 * kv2 + 2 * kv3 + kv4));
 
 //    } else if (nb_pendule > 2 || nb_pendule == 1) {
 //
@@ -378,7 +378,7 @@ void Maestro::calcule_temp_plus_1() {
 //        }
 
         //Gémini
-    } else if (nb_pendule > 2 || nb_pendule == 1) {
+    //} else if (nb_pendule > 2 || nb_pendule == 1) {
 
         double* x = (double *)malloc(sizeof(double) * nb_pendule);
         double* v = (double *)malloc(sizeof(double) * nb_pendule);
@@ -490,11 +490,11 @@ void Maestro::calcule_temp_plus_1() {
         free(tmp2x);
 
 
-    } else {
-        printf("pas de methode pour %d pendule\n", nb_pendule);
-        this->temps += tempsmax;
-        return;
-    }
+    //} else {
+    //    printf("pas de methode pour %d pendule\n", nb_pendule);
+    //    this->temps += tempsmax;
+    //    return;
+    //}
 
     this->temps += pas;
 }
@@ -625,7 +625,7 @@ void Maestro::save() {
     fprintf(energiefile, "%0.3g;", temps);
 
     double Ec = 0, Ep = 0;
-    double x_curr = 0, y_curr = 0;
+    double y_curr = 0;
     double vx_curr = 0, vy_curr = 0;
 
     for (int i = 0; i < nb_pendule; i++) {
@@ -634,7 +634,6 @@ void Maestro::save() {
         double l  = list_pendule[i]->r();
         double mass = list_pendule[i]->m();
 
-        x_curr += l * sin(th);
         y_curr -= l * cos(th);
         vx_curr += l * om * cos(th);
         vy_curr += l * om * sin(th);
