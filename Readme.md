@@ -11,7 +11,7 @@ It is a small software for simulating multiple pendulums using RK4 (Runge-Kutta 
 
 To install the software, simply clone the repository via
 ```
-git clone https://github.com/Le-foucheur/polyekkreme/tree/main
+git clone https://github.com/Le-foucheur/polyekkreme
 cd polyekkreme
 ```
 
@@ -78,7 +78,7 @@ Il s’agit d’un petit logiciel de simulation de pendules multiples via RK4 (R
 
 Pour installer le logiciel, il vous suffit de cloner le dépôt via :
 ```
-git clone https://github.com/Le-foucheur/polyekkreme/tree/main
+git clone https://github.com/Le-foucheur/polyekkreme
 cd polyekkreme
 ```
 
